@@ -1,4 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<session version="1.0">
-<refactoring comment="Redenominar tipo &apos;r2.Ejercicio16&apos; como &apos;Ejercicio16a&apos;&#x0D;&#x0A;- Proyecto original: &quot;Tema3&quot;&#x0D;&#x0A;- Elemento original: &apos;r2.Ejercicio16&apos;&#x0D;&#x0A;- Elemento redenominado: &apos;r2.Ejercicio16a&apos;&#x0D;&#x0A;- Actualizar referencias a elemento refactorizado&#x0D;&#x0A;- Actualizar apariciones textuales en comentarios y series" description="Redenominar tipo &apos;Ejercicio16&apos;" flags="589830" id="org.eclipse.jdt.ui.rename.type" input="/src&lt;r2{Ejercicio16.java[Ejercicio16" matchStrategy="1" name="Ejercicio16a" qualified="false" references="true" similarDeclarations="false" stamp="1413360585868" textual="false" version="1.0"/>
-</session>
