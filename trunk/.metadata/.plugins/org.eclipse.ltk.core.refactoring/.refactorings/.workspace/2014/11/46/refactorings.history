@@ -1,4 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<session version="1.0">
-<refactoring comment="Redenominar el proyecto Java &apos;Paquete&apos; como &apos;Paquetes&apos;&#x0D;&#x0A;- Elemento original: &apos;Paquete&apos;&#x0D;&#x0A;- Elemento redenominado: &apos;Paquete&apos;&#x0D;&#x0A;- Actualizar referencias a elemento refactorizado" description="Redenominar proyecto Java &apos;Paquete&apos;" flags="7" id="org.eclipse.jdt.ui.rename.java.project" input="=Paquete" name="Paquetes" references="true" stamp="1415606821050" version="1.0"/>
-</session>
