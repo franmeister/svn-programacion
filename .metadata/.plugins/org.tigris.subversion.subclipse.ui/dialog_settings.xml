@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<section name="Workbench">
+	<section name="NewLocationWizard">
+		<list key="ConfigurationWizardMainPage.STORE_URL_ID">
+			<item value="https://svn-programacion.googlecode.com/svn/trunk/"/>
+			<item value="https://svn-programacion.googlecode.com/svn"/>
+			<item value="https://code.google.com/p/svn-programacion/"/>
+			<item value=""/>
+		</list>
+	</section>
+</section>

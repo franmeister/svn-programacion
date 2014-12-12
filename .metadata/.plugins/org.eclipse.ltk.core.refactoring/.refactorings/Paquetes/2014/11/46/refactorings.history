@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Redenominar el paquete &apos;domotica.electrodomestico&apos; como &apos;domotica.electrodomesticos&apos;&#x0D;&#x0A;- Proyecto original: &quot;Paquete&quot;&#x0D;&#x0A;- Elemento original: &apos;Paquete/src/domotica.electrodomestico&apos;&#x0D;&#x0A;- Elemento redenominado: &apos;Paquete/src/domotica.electrodomesticos&apos;&#x0D;&#x0A;- Actualizar referencias a elemento refactorizado&#x0D;&#x0A;- Actualizar apariciones textuales en comentarios y series" description="Redenominar paquete &apos;domotica.electrodomestico&apos;" flags="589830" hierarchical="false" id="org.eclipse.jdt.ui.rename.package" input="/src&lt;domotica.electrodomestico" name="domotica.electrodomesticos" qualified="false" references="true" stamp="1415606627547" textual="false" version="1.0"/>
+</session>
