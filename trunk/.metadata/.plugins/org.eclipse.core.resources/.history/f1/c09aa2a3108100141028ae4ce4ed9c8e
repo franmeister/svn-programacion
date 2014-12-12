@@ -1,0 +1,10 @@
+package teoria;
+
+public class aaa {
+	public static void main(String[] args) {
+		String a="hl";
+		if(a.equals("hi")){
+			System.out.println("OK");
+		}
+	}
+}
