@@ -22,14 +22,14 @@ public class Biblioteca {
 			titulo=PedirDatos.leerCadena("Introduce Título:");
 			materia=PedirDatos.leerCadena("Introduce Materia:");
 			editorial=PedirDatos.leerCadena("Introduce Editorial:");
-			libros.add(new Libro(isbn, signatura, titulo, autor, materia, editorial));
+			this.libros.add(new Libro(isbn, signatura, titulo, autor, materia, editorial));
 			break;
 		case "Articulo":
 			cod=PedirDatos.leerEntero("Introduce Código del Artículo:");
 			autor=PedirDatos.leerCadena("Introduce Autor:");
 			titulo=PedirDatos.leerCadena("Introduce Título:");
 			numPaginas=PedirDatos.leerEntero("Introduce número de páginas:");
-			articulos.add(new Articulo(cod, titulo, autor, numPaginas));
+			this.articulos.add(new Articulo(cod, titulo, autor, numPaginas));
 			break;
 		case "CD-ROM":
 			cod=PedirDatos.leerEntero("Introduce Código de CD-ROM:");
@@ -38,79 +38,87 @@ public class Biblioteca {
 			titulo=PedirDatos.leerCadena("Introduce Título:");
 			materia=PedirDatos.leerCadena("Introduce Materia:");
 			editorial=PedirDatos.leerCadena("Introduce Editorial:");
-			cdrom.add(new Cdrom(cod, signatura, titulo, autor, materia, editorial));
+			this.cdrom.add(new Cdrom(cod, signatura, titulo, autor, materia, editorial));
 			break;
 		case "Revista":
-			cod=PedirDatos.leerEntero("Introduce Código de CD-ROM:");
+			cod=PedirDatos.leerEntero("Introduce Código de Revista:");
 			signatura=PedirDatos.leerCadena("Introduce Signatura:");
 			materia=PedirDatos.leerCadena("Introduce Materia:");
 			nombre=PedirDatos.leerCadena("Introduce Nombre:");
-			revistas.add(new Revista(cod, signatura, nombre, materia));
+			this.revistas.add(new Revista(cod, signatura, nombre, materia));
 			break;
 		case "Usuario":
-			cod=PedirDatos.leerEntero("Introduce Código de CD-ROM:");
+			cod=PedirDatos.leerEntero("Introduce Código de Usuario:");
 			nombre=PedirDatos.leerCadena("Introduce Nombre:");
 			apellido1=PedirDatos.leerCadena("Introduce Primer Apellido:");
 			apellido2=PedirDatos.leerCadena("Introduce Segundo Apellido:");
-			usuarios.add(new Usuario(cod, nombre, apellido1, apellido2));
+			this.usuarios.add(new Usuario(cod, nombre, apellido1, apellido2));
 			break;
 		default:
 			break;
 		}
 	}
 	
-	private int buscar(){
-		if
+	private int buscar(String material, int cod){
+		switch (material) {
+		case "Revista":
+			for(int i=0;i<revistas.size();i++){
+				if(this.revistas.elementAt(i).getCodRevista()==cod){
+					return i;
+				}	
+			}
+			break;
+		case "CD-ROM":
+			for(int i=0;i<cdrom.size();i++){
+				if(this.cdrom.elementAt(i).getCodCdrom()==cod){
+					return i;
+				}	
+			}
+			break;
+		case "Usuario":
+			for(int i=0;i<usuarios.size();i++){
+				if(this.usuarios.elementAt(i).getCodUsuario()==cod){
+					return i;
+				}	
+			}
+			break;
+		case "Articulo":
+			for(int i=0;i<articulos.size();i++){
+				if(this.articulos.elementAt(i).getCodArticulo()==cod){
+					return i;
+				}	
+			}
+			break;
+		default:
+			break;
+		}
+		return -1;
+	}
+	
+	private int buscarLibro(String isbn){
+		for(int i=0;i<libros.size();i++){
+			if(this.libros.elementAt(i).getIsbn().equals(isbn)){
+				return i;
+			}
+		}
 		return -1;
 	}
 	
 	private void modificarMaterial(String material){
-		String isbn, signatura, titulo, autor, materia, editorial, nombre, apellido1, apellido2;
-		int numPaginas, cod;
-		
-		switch (material) {
-		case "Libro":
-			isbn=PedirDatos.leerCadena("Introduce ISBN:");
-			signatura=PedirDatos.leerCadena("Introduce Signatura:");
-			autor=PedirDatos.leerCadena("Introduce Autor:");
-			titulo=PedirDatos.leerCadena("Introduce Título:");
-			materia=PedirDatos.leerCadena("Introduce Materia:");
-			editorial=PedirDatos.leerCadena("Introduce Editorial:");
-			libros.add(new Libro(isbn, signatura, titulo, autor, materia, editorial));
-			break;
-		case "Articulo":
-			cod=PedirDatos.leerEntero("Introduce Código del Artículo:");
-			autor=PedirDatos.leerCadena("Introduce Autor:");
-			titulo=PedirDatos.leerCadena("Introduce Título:");
-			numPaginas=PedirDatos.leerEntero("Introduce número de páginas:");
-			articulos.add(new Articulo(cod, titulo, autor, numPaginas));
-			break;
-		case "CD-ROM":
-			cod=PedirDatos.leerEntero("Introduce Código de CD-ROM:");
-			signatura=PedirDatos.leerCadena("Introduce Signatura:");
-			autor=PedirDatos.leerCadena("Introduce Autor:");
-			titulo=PedirDatos.leerCadena("Introduce Título:");
-			materia=PedirDatos.leerCadena("Introduce Materia:");
-			editorial=PedirDatos.leerCadena("Introduce Editorial:");
-			cdrom.add(new Cdrom(cod, signatura, titulo, autor, materia, editorial));
-			break;
-		case "Revista":
-			cod=PedirDatos.leerEntero("Introduce Código de CD-ROM:");
-			signatura=PedirDatos.leerCadena("Introduce Signatura:");
-			materia=PedirDatos.leerCadena("Introduce Materia:");
-			nombre=PedirDatos.leerCadena("Introduce Nombre:");
-			revistas.add(new Revista(cod, signatura, nombre, materia));
-			break;
-		case "Usuario":
-			cod=PedirDatos.leerEntero("Introduce Código de CD-ROM:");
-			nombre=PedirDatos.leerCadena("Introduce Nombre:");
-			apellido1=PedirDatos.leerCadena("Introduce Primer Apellido:");
-			apellido2=PedirDatos.leerCadena("Introduce Segundo Apellido:");
-			usuarios.add(new Usuario(cod, nombre, apellido1, apellido2));
-			break;
-		default:
-			break;
+		//
+		if(material.equals("Libro")){
+			String isbn=PedirDatos.leerCadena("Introduce el ISBN del libro a modificar: ");
+			if(this.buscarLibro(isbn)==-1){
+				System.out.println("No existe el libro con el ISBN "+isbn+".");
+			}
+			//modificar
+			return;
 		}
+		int codigo=PedirDatos.leerEntero("Introduce el código del objeto a modificar: ");
+		if(this.buscar(material,codigo)==-1){
+			System.out.println("No existe "+material+" con el código "+codigo+".");
+		}
+		//modificar		
 	}
 	
 	private void menuMaterial(String material){
