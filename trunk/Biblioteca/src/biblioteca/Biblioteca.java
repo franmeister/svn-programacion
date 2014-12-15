@@ -80,30 +80,38 @@ public class Biblioteca {
 		switch (material) {
 		case "Revista":
 			for(int i=0;i<revistas.size();i++){
-				if(this.revistas.elementAt(i).getCodRevista()==cod){
-					return i;
-				}	
+				try{
+					if(this.revistas.elementAt(i).getCodRevista()==cod){
+						return i;
+					}
+				}catch(Exception e){}
 			}
 			break;
 		case "CD-ROM":
 			for(int i=0;i<cdrom.size();i++){
-				if(this.cdrom.elementAt(i).getCodCdrom()==cod){
-					return i;
-				}	
+				try{
+					if(this.cdrom.elementAt(i).getCodCdrom()==cod){
+						return i;
+					}	
+				}catch(Exception e){}
 			}
 			break;
 		case "Usuario":
 			for(int i=0;i<usuarios.size();i++){
-				if(this.usuarios.elementAt(i).getCodUsuario()==cod){
-					return i;
-				}	
+				try{
+					if(this.usuarios.elementAt(i).getCodUsuario()==cod){
+						return i;
+					}	
+				}catch(Exception e){}
 			}
 			break;
 		case "Articulo":
 			for(int i=0;i<articulos.size();i++){
-				if(this.articulos.elementAt(i).getCodArticulo()==cod){
-					return i;
-				}	
+				try{
+					if(this.articulos.elementAt(i).getCodArticulo()==cod){
+						return i;
+					}	
+				}catch(Exception e){}
 			}
 			break;
 		default:
@@ -114,9 +122,11 @@ public class Biblioteca {
 	
 	private int buscarLibro(String isbn){
 		for(int i=0;i<libros.size();i++){
-			if(this.libros.elementAt(i).getIsbn().equals(isbn)){
-				return i;
-			}
+			try{
+				if(this.libros.elementAt(i).getIsbn().equals(isbn)){
+					return i;
+				}
+			}catch(Exception e){}
 		}
 		return -1;
 	}
@@ -138,6 +148,7 @@ public class Biblioteca {
 		pos=this.buscar(material,codigo);
 		if(pos==-1){
 			System.out.println("No existe "+material+" con el código "+codigo+".");
+			return;
 		}
 		switch (material) {
 		case "Articulo":
@@ -174,6 +185,7 @@ public class Biblioteca {
 		pos=this.buscar(material,codigo);
 		if(pos==-1){
 			System.out.println("No existe "+material+" con el código "+codigo+".");
+			return;
 		}
 		switch (material) {
 		case "Articulo":
