@@ -1,5 +1,6 @@
 package biblioteca;
 
+import java.util.Calendar;
 import java.util.Vector;
 
 public class Biblioteca {
@@ -9,6 +10,8 @@ public class Biblioteca {
 	private Vector<Cdrom> cdrom=new Vector<Cdrom>();
 	private Vector<Revista> revistas=new Vector<Revista>();
 	private Vector<Usuario> usuarios=new Vector<Usuario>();
+	private Prestamo[] prestamos=new Prestamo[1000];
+	private int posicion=0;
 	
 	private Libro crearLibro(){
 		String isbn = PedirDatos.leerCadena("Introduce ISBN:");
@@ -205,6 +208,22 @@ public class Biblioteca {
 		}
 	}
 	
+	private Calendar fechaActual(){
+		 Calendar c = Calendar.getInstance();
+	     return c;
+	}
+	
+	private int estaPrestado(String material, String cod){
+		try{
+			for(int i=0;i<prestamos.length;i++){
+				if(prestamos[i].getCodMaterial().equals(cod)){
+					return i;
+				}
+			}
+		}catch(Exception e){}
+		return -1;
+	}
+	
 	private void prestarMaterial(String material){
 		int pos;
 		int usuario=PedirDatos.leerEntero("Introduce el código del usuario");
@@ -222,7 +241,12 @@ public class Biblioteca {
 				System.out.println("No existe el libro con el ISBN "+isbn+".");
 				return;
 			}
-			//this.libros.remove(pos);  PRESTAR
+			if(this.estaPrestado(material, isbn)!=-1){
+				System.out.println("El libro está prestado.");
+				return;
+			}
+			this.prestamos[posicion]=new Prestamo(usuario, isbn, material, fechaActual());
+			this.posicion++;
 			return;
 		}
 		
@@ -232,35 +256,17 @@ public class Biblioteca {
 			System.out.println("No existe "+material+" con el código "+codigo+".");
 			return;
 		}
-		
-		switch (material) {
-		case "Articulo":
-			//this.articulos.remove(pos); PRESTAR
-			break;
-		case "CD-ROM":
-			//this.cdrom.remove(pos); PRESTAR
-			break;
-		case "Revista":
-			//this.revistas.remove(pos); PRESTAR
-			break;
-		case "Usuario":
-			//this.usuarios.remove(pos); PRESTAR
-			break;
-		default:
-			break;	
+		if(this.estaPrestado(material, codigo+"")!=-1){
+			System.out.println("El "+material+" está prestado.");
+			return;
 		}
+		this.prestamos[posicion]=new Prestamo(usuario, codigo+"", material, fechaActual());
+		this.posicion++;
 	}
 	
 	private void devolverMaterial(String material){
 		int pos;
-		int usuario=PedirDatos.leerEntero("Introduce el código del usuario");
-		
-		pos=this.buscar("Usuario", usuario);
-		if(pos==-1){
-			System.out.println("No existe el usuario con código "+usuario+".");
-			return;
-		}
-		
+
 		if(material.equals("Libro")){
 			String isbn=PedirDatos.leerCadena("Introduce el ISBN del libro a devolver: ");
 			pos=this.buscarLibro(isbn);
@@ -268,35 +274,27 @@ public class Biblioteca {
 				System.out.println("No existe el libro con el ISBN "+isbn+".");
 				return;
 			}
-			//this.libros.remove(pos);  PRESTAR
+			pos=this.estaPrestado(material, isbn);
+			if(pos==-1){
+				System.out.println("El libro no está prestado.");
+				return;
+			}
+			this.prestamos[pos].setFechaPrestamo(fechaActual());
 			return;
 		}
-		
-		int codigo=PedirDatos.leerEntero("Introduce el código del "+material+" a devolver: ");
+			
+		int codigo=PedirDatos.leerEntero("Introduce el código del "+material+" a prestar: ");
 		pos=this.buscar(material,codigo);
 		if(pos==-1){
 			System.out.println("No existe "+material+" con el código "+codigo+".");
 			return;
 		}
-		
-		switch (material) {
-		case "Articulo":
-			//this.articulos.remove(pos); PRESTAR
-			break;
-		case "CD-ROM":
-			//this.cdrom.remove(pos); PRESTAR
-			break;
-		case "Revista":
-			//this.revistas.remove(pos); PRESTAR
-			break;
-		case "Usuario":
-			//this.usuarios.remove(pos); PRESTAR
-			break;
-		default:
-			break;	
+		pos=this.estaPrestado(material, codigo+"");
+		if(pos!=-1){
+			this.prestamos[pos].setFechaPrestamo(fechaActual());
 		}
 	}
-	
+		
 	private void realizarPrestamo(){
 		int op=-1;
 		do{
