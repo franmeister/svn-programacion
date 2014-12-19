@@ -144,7 +144,7 @@ public class Biblioteca {
 			this.libros.setElementAt(crearLibro(),pos);
 			return;
 		}
-		int codigo=PedirDatos.leerEntero("Introduce el código del objeto a modificar: ");
+		int codigo=PedirDatos.leerEntero("Introduce el código del "+material+" a modificar: ");
 		pos=this.buscar(material,codigo);
 		if(pos==-1){
 			System.out.println("No existe "+material+" con el código "+codigo+".");
@@ -181,7 +181,7 @@ public class Biblioteca {
 			this.libros.remove(pos);
 			return;
 		}
-		int codigo=PedirDatos.leerEntero("Introduce el código del objeto a borrar: ");
+		int codigo=PedirDatos.leerEntero("Introduce el código del "+material+" a borrar: ");
 		pos=this.buscar(material,codigo);
 		if(pos==-1){
 			System.out.println("No existe "+material+" con el código "+codigo+".");
@@ -203,6 +203,166 @@ public class Biblioteca {
 		default:
 			break;	
 		}
+	}
+	
+	private void prestarMaterial(String material){
+		int pos;
+		int usuario=PedirDatos.leerEntero("Introduce el código del usuario");
+		
+		pos=this.buscar("Usuario", usuario);
+		if(pos==-1){
+			System.out.println("No existe el usuario con código "+usuario+".");
+			return;
+		}
+		
+		if(material.equals("Libro")){
+			String isbn=PedirDatos.leerCadena("Introduce el ISBN del libro a prestar: ");
+			pos=this.buscarLibro(isbn);
+			if(pos==-1){
+				System.out.println("No existe el libro con el ISBN "+isbn+".");
+				return;
+			}
+			//this.libros.remove(pos);  PRESTAR
+			return;
+		}
+		
+		int codigo=PedirDatos.leerEntero("Introduce el código del "+material+" a prestar: ");
+		pos=this.buscar(material,codigo);
+		if(pos==-1){
+			System.out.println("No existe "+material+" con el código "+codigo+".");
+			return;
+		}
+		
+		switch (material) {
+		case "Articulo":
+			//this.articulos.remove(pos); PRESTAR
+			break;
+		case "CD-ROM":
+			//this.cdrom.remove(pos); PRESTAR
+			break;
+		case "Revista":
+			//this.revistas.remove(pos); PRESTAR
+			break;
+		case "Usuario":
+			//this.usuarios.remove(pos); PRESTAR
+			break;
+		default:
+			break;	
+		}
+	}
+	
+	private void devolverMaterial(String material){
+		int pos;
+		int usuario=PedirDatos.leerEntero("Introduce el código del usuario");
+		
+		pos=this.buscar("Usuario", usuario);
+		if(pos==-1){
+			System.out.println("No existe el usuario con código "+usuario+".");
+			return;
+		}
+		
+		if(material.equals("Libro")){
+			String isbn=PedirDatos.leerCadena("Introduce el ISBN del libro a devolver: ");
+			pos=this.buscarLibro(isbn);
+			if(pos==-1){
+				System.out.println("No existe el libro con el ISBN "+isbn+".");
+				return;
+			}
+			//this.libros.remove(pos);  PRESTAR
+			return;
+		}
+		
+		int codigo=PedirDatos.leerEntero("Introduce el código del "+material+" a devolver: ");
+		pos=this.buscar(material,codigo);
+		if(pos==-1){
+			System.out.println("No existe "+material+" con el código "+codigo+".");
+			return;
+		}
+		
+		switch (material) {
+		case "Articulo":
+			//this.articulos.remove(pos); PRESTAR
+			break;
+		case "CD-ROM":
+			//this.cdrom.remove(pos); PRESTAR
+			break;
+		case "Revista":
+			//this.revistas.remove(pos); PRESTAR
+			break;
+		case "Usuario":
+			//this.usuarios.remove(pos); PRESTAR
+			break;
+		default:
+			break;	
+		}
+	}
+	
+	private void realizarPrestamo(){
+		int op=-1;
+		do{
+			System.out.println("\n");
+			System.out.println("1.Libro");
+			System.out.println("2.Revista");
+			System.out.println("3.Artículo");
+			System.out.println("4.CD-ROM");
+			System.out.println("0.Volver al menú principal");
+			op=PedirDatos.leerEntero("Introduce material a prestar");
+			
+			switch (op) {
+			case 0:
+				break;
+			case 1:
+				this.prestarMaterial("Libro");
+				break; 
+			case 2:
+				this.prestarMaterial("Revista");
+				break;
+			case 3:
+				this.prestarMaterial("Articulo");
+				break;
+			case 4:
+				this.prestarMaterial("CD-ROM");
+				break;
+			default:
+				System.out.println("Debe selecionar una opción correcta. Vuelva a intentarlo.");
+				break;
+			}
+		}while(op!=0);
+		
+	}
+	
+	private void devolverPrestamo(){
+		int op=-1;
+		do{
+			System.out.println("\n");
+			System.out.println("1.Libro");
+			System.out.println("2.Revista");
+			System.out.println("3.Artículo");
+			System.out.println("4.CD-ROM");
+			System.out.println("0.Volver al menú principal");
+			op=PedirDatos.leerEntero("Introduce material a devolver");
+			
+			switch (op) {
+			case 0:
+				break;
+			case 1:
+				this.devolverMaterial("Libro");
+				break;
+			case 2:
+				this.devolverMaterial("Revista");
+				break;
+			case 3:
+				this.devolverMaterial("Articulo");
+				break;
+			case 4:
+				this.devolverMaterial("CD-ROM");
+				break;
+			default:
+				System.out.println("Debe selecionar una opción correcta. Vuelva a intentarlo.");
+				break;
+			}
+		}while(op!=0);
+		
 	}
 	
 	private void menuMaterial(String material){
@@ -269,10 +429,10 @@ public class Biblioteca {
 				this.menuMaterial("Usuario");
 				break;
 			case 6:
-				//this.realizarPrestamo();
+				this.realizarPrestamo();
 				break;
 			case 7:
-				//this.devolverPrestamo();
+				this.devolverPrestamo();
 				break;
 			default:
 				System.out.println("Debe selecionar una opción correcta. Vuelva a intentarlo.");
