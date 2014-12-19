@@ -215,8 +215,8 @@ public class Biblioteca {
 	
 	private int estaPrestado(String material, String cod){
 		try{
-			for(int i=0;i<prestamos.length;i++){
-				if(prestamos[i].getCodMaterial().equals(cod)){
+			for(int i=0;i<this.prestamos.length;i++){
+				if(this.prestamos[i].getCodMaterial().equals(cod) && this.prestamos[i].getFechaDevolucion()==null){
 					return i;
 				}
 			}
@@ -279,7 +279,7 @@ public class Biblioteca {
 				System.out.println("El libro no está prestado.");
 				return;
 			}
-			this.prestamos[pos].setFechaPrestamo(fechaActual());
+			this.prestamos[pos].setFechaDevolucion(fechaActual());
 			return;
 		}
 			
@@ -291,7 +291,7 @@ public class Biblioteca {
 		}
 		pos=this.estaPrestado(material, codigo+"");
 		if(pos!=-1){
-			this.prestamos[pos].setFechaPrestamo(fechaActual());
+			this.prestamos[pos].setFechaDevolucion(fechaActual());
 		}
 	}
 		
