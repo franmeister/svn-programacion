@@ -17,28 +17,16 @@ public class Prestamo {
 		this.fechaPrestamo = fechaPrestamo;
 	}
 
-	public Calendar getFechaPrestamo() {
-		return fechaPrestamo;
-	}
-
-	public void setFechaPrestamo(Calendar fechaPrestamo) {
-		this.fechaPrestamo = fechaPrestamo;
-	}
-
-	public int getCodUsuario() {
-		return codUsuario;
-	}
-
 	public String getCodMaterial() {
 		return codMaterial;
 	}
 
-	public String getMaterial() {
-		return material;
-	}
-
 	public Calendar getFechaDevolucion() {
 		return fechaDevolucion;
+	}
+
+	public void setFechaDevolucion(Calendar fechaDevolucion) {
+		this.fechaDevolucion = fechaDevolucion;
 	}
 	
 	
