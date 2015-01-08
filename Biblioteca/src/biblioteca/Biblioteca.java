@@ -14,7 +14,15 @@ public class Biblioteca {
 	private int posicion=0;
 	
 	private Libro crearLibro(){
-		String isbn = PedirDatos.leerCadena("Introduce ISBN:");
+		String isbn;
+		int posLibro;
+		do{
+			isbn = PedirDatos.leerCadena("Introduce ISBN:");
+			posLibro=this.buscarLibro(isbn);
+			if(posLibro!=-1){
+				System.out.println("Error, el ISBN ya existe.");
+			}
+		}while(posLibro!=-1);
 		String signatura = PedirDatos.leerCadena("Introduce Signatura:");
 		String autor = PedirDatos.leerCadena("Introduce Autor:");
 		String titulo = PedirDatos.leerCadena("Introduce Título:");
@@ -24,7 +32,14 @@ public class Biblioteca {
 	}
 	
 	private Articulo crearArticulo(){
-		int cod = PedirDatos.leerEntero("Introduce Código del Artículo:");
+		int cod, posArt;
+		do{
+			cod = PedirDatos.leerEntero("Introduce Código del Artículo:");
+			posArt=this.buscar("Articulo", cod);
+			if(posArt!=-1){
+				System.out.println("Error, el código ya existe.");
+			}
+		}while(posArt!=-1);
 		String autor = PedirDatos.leerCadena("Introduce Autor:");
 		String titulo = PedirDatos.leerCadena("Introduce Título:");
 		int numPaginas = PedirDatos.leerEntero("Introduce número de páginas:");
@@ -32,7 +47,14 @@ public class Biblioteca {
 	}
 	
 	private Cdrom crearCdrom(){
-		int cod = PedirDatos.leerEntero("Introduce Código de CD-ROM:");
+		int cod, posCD;
+		do{
+			cod = PedirDatos.leerEntero("Introduce Código del CD-ROM:");
+			posCD=this.buscar("CD-ROM", cod);
+			if(posCD!=-1){
+				System.out.println("Error, el código ya existe.");
+			}
+		}while(posCD!=-1);
 		String signatura = PedirDatos.leerCadena("Introduce Signatura:");
 		String autor = PedirDatos.leerCadena("Introduce Autor:");
 		String titulo = PedirDatos.leerCadena("Introduce Título:");
@@ -42,7 +64,14 @@ public class Biblioteca {
 	}
 
 	private Revista crearRevista(){
-		int cod = PedirDatos.leerEntero("Introduce Código de Revista:");
+		int cod, posRev;
+		do{
+			cod = PedirDatos.leerEntero("Introduce Código de la Revista:");
+			posRev=this.buscar("Revista", cod);
+			if(posRev!=-1){
+				System.out.println("Error, el código ya existe.");
+			}
+		}while(posRev!=-1);
 		String signatura = PedirDatos.leerCadena("Introduce Signatura:");
 		String materia = PedirDatos.leerCadena("Introduce Materia:");
 		String nombre = PedirDatos.leerCadena("Introduce Nombre:");
@@ -50,7 +79,14 @@ public class Biblioteca {
 	}
 	
 	private Usuario crearUsuario(){
-		int cod = PedirDatos.leerEntero("Introduce Código de Usuario:");
+		int cod, posUsu;
+		do{
+			cod = PedirDatos.leerEntero("Introduce Código del Usuario:");
+			posUsu=this.buscar("Usuario", cod);
+			if(posUsu!=-1){
+				System.out.println("Error, el código ya existe.");
+			}
+		}while(posUsu!=-1);
 		String nombre = PedirDatos.leerCadena("Introduce Nombre:");
 		String apellido1 = PedirDatos.leerCadena("Introduce Primer Apellido:");
 		String apellido2 = PedirDatos.leerCadena("Introduce Segundo Apellido:");
@@ -144,6 +180,7 @@ public class Biblioteca {
 				System.out.println("No existe el libro con el ISBN "+isbn+".");
 				return;
 			}
+			this.libros.setElementAt(null, pos); //para poder usar el ISBN del libro que va a ser modificado
 			this.libros.setElementAt(crearLibro(),pos);
 			return;
 		}
@@ -155,15 +192,19 @@ public class Biblioteca {
 		}
 		switch (material) {
 		case "Articulo":
+			this.articulos.setElementAt(null,pos);
 			this.articulos.setElementAt(crearArticulo(),pos);
 			break;
 		case "CD-ROM":
+			this.cdrom.setElementAt(null,pos);
 			this.cdrom.setElementAt(crearCdrom(),pos);
 			break;
 		case "Revista":
+			this.revistas.setElementAt(null,pos);
 			this.revistas.setElementAt(crearRevista(),pos);
 			break;
 		case "Usuario":
+			this.usuarios.setElementAt(null,pos);
 			this.usuarios.setElementAt(crearUsuario(),pos);
 			break;
 		default:
@@ -421,7 +462,7 @@ public class Biblioteca {
 				this.menuMaterial("CD-ROM");
 				break;
 			case 4:
-				this.menuMaterial("Artículo");
+				this.menuMaterial("Articulo");
 				break;
 			case 5:
 				this.menuMaterial("Usuario");
