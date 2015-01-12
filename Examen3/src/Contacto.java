@@ -32,7 +32,7 @@ public class Contacto {
 	}
 	
 	public void setTelefono(int telefono){
-		if(this.posicion>5){
+		if(this.posicion>4){
 			System.out.println("El contacto "+this.nombre+" ya tiene asignados 5 números de teléfono.");
 			return;
 		}
@@ -48,18 +48,21 @@ public class Contacto {
 		
 		int pos=PedirDatos.leerEntero("\nIntroduce posición a eliminar: ");
 		
-		for(int i=pos;i<posicion;i++){
-			this.telefonos[i]=this.telefonos[i+1];
-		}
+		try{
+			for(int i=pos;i<this.posicion;i++){
+				this.telefonos[i]=this.telefonos[i+1];
+			}
+		}catch(Exception e){}
+		
 		this.posicion--;
 	}
 	
 	private String mostrarTelefonos(){
 		String res=this.telefonos[0]+"";
-		
-		for(int i=1;i<this.posicion;i++){
-			res=res+", "+this.telefonos[i];
-		}
+	
+			for(int i=1;i<this.posicion;i++){
+				res=res+", "+this.telefonos[i];
+			}
 		
 		return res;
 	}
