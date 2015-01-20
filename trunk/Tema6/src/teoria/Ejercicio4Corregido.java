@@ -1,4 +1,4 @@
-package Ejercicios;
+package teoria;
 
 import java.io.*;
 
