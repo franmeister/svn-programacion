@@ -1,4 +1,4 @@
-package Ejercicios;
+package relacion1;
 
 import java.io.*;
 
