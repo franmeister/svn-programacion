@@ -1,4 +1,4 @@
-package trabajoconficheros;
+package teoria.trabajoconficheros;
 
 import java.io.*;
 
@@ -12,7 +12,7 @@ public class GestionAlumnos {
 		f=new File(ruta);
 		
 		try {
-			//flectura=new BufferedReader(new FileReader(f));
+			flectura=new BufferedReader(new FileReader(f));
 			fescritura=new BufferedWriter(new FileWriter(f));
 		} catch (FileNotFoundException e) {
 			System.out.println("la dirección introducida no es un fichero");
@@ -69,17 +69,31 @@ public class GestionAlumnos {
 		}
 	}
 	
+	private void listarAlumnos(){
+		try {
+			String linea=flectura.readLine();
+			while(linea!=null){
+				System.out.println(new Alumno(linea.substring(0, 9), linea.substring(10, 50), Double.parseDouble(linea.substring(50, 54))).toString());
+				linea=flectura.readLine();
+			}
+		} catch (IOException e) {
+			// TODO Bloque catch generado automáticamente
+			e.printStackTrace();
+		}
+
+	}
+	
 	public void menu(){
 		int opcion=0;
 		boolean seguir=true;
 		
 		do{
-			System.out.println("1.Nuevo Alumno");
-			System.out.println("2.Modificar Alumno");
-			System.out.println("3.Borrar Alumno");
-			System.out.println("4.Buscar Alumno");
-			System.out.println("5.Listar Alumnos");
-			System.out.println("6.salir");
+			System.out.println("1. Nuevo Alumno");
+			System.out.println("2. Modificar Alumno");
+			System.out.println("3. Borrar Alumno");
+			System.out.println("4. Buscar Alumno");
+			System.out.println("5. Listar Alumnos");
+			System.out.println("6. Salir");
 			do{
 				try{
 					System.out.println("Introduzca una opción:");
@@ -102,9 +116,9 @@ public class GestionAlumnos {
 			case 4:
 				break;
 			case 5:
+				this.listarAlumnos();
 				break;
 			case 6:
-				System.out.println("Adios!!!");
 				break;
 			default:
 				System.out.println("Debe introducir un numero entre 1 y 6");
