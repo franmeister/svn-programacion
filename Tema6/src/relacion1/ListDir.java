@@ -17,7 +17,6 @@ public class ListDir {
 				examinarDirectorio(lista[i], ext);
 			}
 		}
-
 	}
 	
 	public static void main(String[] args) throws IOException {

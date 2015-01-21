@@ -5,9 +5,8 @@ import java.io.*;
 public class NotasMedias {
 
 	public static void main(String[] args) throws IOException {
-		// TODO Apéndice de método generado automáticamente
-		File temp=new File("E:\\Users\\Antonio\\Desktop\\Java\\Tema6\\Notas.tmp");
-		File f=new File("E:\\Users\\Antonio\\Desktop\\Java\\Tema6\\Notas.txt");
+		File temp=new File("E:\\Users\\USUARIO\\Desktop\\Notas.tmp");
+		File f=new File("E:\\Users\\USUARIO\\Desktop\\Notas.txt");
 		BufferedReader teclado=new BufferedReader(new InputStreamReader(System.in));
 		BufferedWriter fsalida=new BufferedWriter(new FileWriter(temp));
 		BufferedReader fentrada=new BufferedReader(new FileReader(f));

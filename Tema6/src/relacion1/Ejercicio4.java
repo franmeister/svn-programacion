@@ -5,15 +5,15 @@ import java.io.*;
 public class Ejercicio4 {
 
 	public static void main(String[] args) throws IOException {
-		// TODO Apéndice de método generado automáticamente
+		// TODO Auto-generated method stub
 		String ficheroEntrada,ficheroSalida;
 		//BufferedReader teclado=new BufferedReader(new InputStreamReader(System.in));
 		//System.out.println("Introduzca la dirección del fichero original a copiar");
 		//ficheroEntrada=teclado.readLine();
 		//System.out.println("Introduzca la dirección del fichero a crear");
 		//ficheroSalida=teclado.readLine();
-		ficheroEntrada="E:\\Users\\Antonio\\Desktop\\Java\\Tema6\\Texto.txt";
-		ficheroSalida="E:\\Users\\Antonio\\Desktop\\Java\\Tema6\\CopiaTexto.txt";
+		ficheroEntrada="E:\\Users\\USUARIO\\Desktop\\Java\\Tema6\\Texto1.txt";
+		ficheroSalida="E:\\Users\\USUARIO\\Desktop\\Java\\Tema6\\CopiaTexto.txt";
 		
 		File fentrada=new File(ficheroEntrada);
 		
@@ -50,6 +50,7 @@ public class Ejercicio4 {
 		bw.close();
 		//teclado.close();
 		
-	}
+	}	
 
 }
+
