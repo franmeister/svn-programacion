@@ -10,7 +10,7 @@ todas las líneas de texto que escriba el usuario en la línea de comandos hasta q
 una vacía, momento en el cual el archivo se cerrará y se leerá escribiendo en la consola su
 contenido. */
 		
-		String fguardado="D:\\maria\\copia.txt";
+		String fguardado="E:\\Users\\USUARIO\\Desktop\\Java\\Tema6\\copia.txt";
 		BufferedReader br=new BufferedReader(new InputStreamReader(System.in));
 		BufferedWriter bw=new BufferedWriter(new FileWriter(fguardado));
 		String linea;
