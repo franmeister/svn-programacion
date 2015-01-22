@@ -16,6 +16,7 @@ public class GestionAlumnos {
 			System.exit(0);
 		}
 		tmp=new File(f.getParent(),"temporal");
+		
 		/*
 		try {
 			flectura=new BufferedReader(new FileReader(f));
@@ -100,7 +101,6 @@ public class GestionAlumnos {
 			flectura=new BufferedReader(new FileReader(f));
 			String linea=flectura.readLine();
 			while(linea!=null){
-				//System.out.println(new Alumno(linea.substring(0, 9), linea.substring(10, 50), Double.parseDouble(linea.substring(50, 54))).toString());
 				System.out.println(descomponerLinea(linea).toString());
 				linea=flectura.readLine();
 			}
@@ -146,6 +146,53 @@ public class GestionAlumnos {
 		return -1;
 	}
 	
+	private String pedirDni(){
+		String dni="";
+		try {
+			System.out.println("Introduzca el DNI de un alumno: ");
+			dni = teclado.readLine();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return dni;
+	}
+	
+	private boolean borrarAlumno(String dni){
+		int i=1,pos=this.buscarAlumno(dni);
+		if(pos!=-1){
+			try {
+				flectura=new BufferedReader(new FileReader(f));
+				fescritura=new BufferedWriter(new FileWriter(tmp));
+				try {
+					String linea=flectura.readLine();
+					while(linea!=null){
+						if(i!=pos){
+							fescritura.write(linea);
+							fescritura.newLine();
+						}
+						linea=flectura.readLine();
+						i++;
+					}
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+		
+				fescritura.flush();
+				fescritura.close();
+				flectura.close();
+				
+				f.delete();
+				tmp.renameTo(f);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			//System.out.println("El alumno con DNI "+dni+" se ha borrado correctamente.");
+			return true;
+		}
+		return false;
+		//System.out.println("El alumno con DNI "+dni+" no existe.");
+	}
+	
 	public void menu(){
 		int opcion=0;
 		boolean seguir=true;
@@ -173,17 +220,21 @@ public class GestionAlumnos {
 				this.nuevoAlumno();
 				break;
 			case 2:
+				if(this.borrarAlumno(this.pedirDni())){
+					this.nuevoAlumno();
+					break;
+				}
+				System.out.println("El alumno no existe.");
 				break;
 			case 3:
+				if(this.borrarAlumno(this.pedirDni())){
+					System.out.println("El alumno se ha borrado correctamente.");
+					break;
+				}
+				System.out.println("El alumno no existe.");
 				break;
 			case 4:
-				try {
-					System.out.println("Introduzca el DNI a buscar: ");
-					String dniB = teclado.readLine();
-					System.out.println(this.buscarAlumno(dniB));
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
+				System.out.println(this.buscarAlumno(this.pedirDni()));
 				break;
 			case 5:
 				this.listarAlumnos();
@@ -194,7 +245,6 @@ public class GestionAlumnos {
 				System.out.println("Debe introducir un numero entre 1 y 6");
 				break;
 			}
-			
 		}while(opcion!=6);
 	}
 }
