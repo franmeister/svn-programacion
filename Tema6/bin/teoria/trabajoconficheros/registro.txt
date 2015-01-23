@@ -1,4 +1,1 @@
-Alumno [dni=1234556  , nombre=ffff                                    , nota=2.0]
-Alumno [dni=543534543, nombre=fdfdf                                   , nota=3.0]
-Alumno [dni=345678   , nombre=ressd                                   , nota=2.0]
-2323      sdf                                     8.0 
+1025      dfds                                    15.0
