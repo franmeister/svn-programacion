@@ -1,4 +1,4 @@
-package teoria;
+package relacion1;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
