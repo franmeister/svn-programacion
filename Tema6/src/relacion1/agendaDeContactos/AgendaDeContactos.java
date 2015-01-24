@@ -3,6 +3,8 @@ package relacion1.agendaDeContactos;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
@@ -23,12 +25,86 @@ public class AgendaDeContactos {
 	}
 	
 	private void nuevoContacto(){
-		String nombre, direccion, municipio, provincia;
-		int cp, telefonoFijo, telefonoMovil;
+		Contacto c=componerContacto();
+		
+		try {
+			flectura=new BufferedReader(new FileReader(f));
+			fescritura=new BufferedWriter(new FileWriter(tmp));
+			
+			String linea=flectura.readLine();
+			while(linea!=null){
+				fescritura.write(linea);
+				fescritura.newLine();
+				linea=flectura.readLine();
+			}
+			
+				fescritura.write(componerRegistro(c));
+				fescritura.flush();
+				fescritura.close();
+				flectura.close();
+				
+				f.delete();
+				tmp.renameTo(f);
+		} catch (IOException e) {
+			System.out.println("Error al manejar ficheros.");
+		}
+
+	}
+	
+	private String componerRegistro(Contacto c){
+		String registro="";
+		
+		registro=c.getNombre()+":"+c.getDireccion()+":"+c.getMunicipio()+":"+c.getProvincia()
+				+":"+ c.getCp()+":"+c.getTelefonoFijo()+":"+c.getTelefonoMovil();
+		
+		return registro;
+	}
+	
+	private void listarContactos(){
+		try {
+			flectura=new BufferedReader(new FileReader(f));
+			String linea=flectura.readLine();
+			while(linea!=null){
+				System.out.println(descomponerRegistro(linea).toString()+"\n");
+				linea=flectura.readLine();
+			}
+			flectura.close();
+		} catch (IOException e) {
+			System.out.println("Error al manejar ficheros.");
+		}
+
+	}
+	
+	private Contacto descomponerRegistro(String linea){
+		String[] registro=new String[7];
+		registro=linea.split(":");
+		return new Contacto(registro[0], registro[1], registro[2], registro[3], registro[4], registro[5], registro[6]);
+	}
+	
+	private void verContacto(String nombre){
+		try {
+			flectura=new BufferedReader(new FileReader(f));
+			String linea=flectura.readLine();
+			while(linea!=null){
+				Contacto c=descomponerRegistro(linea);
+				if(c.getNombre().toLowerCase().equals(nombre.toLowerCase())){
+					System.out.println(c.toString());
+					break;
+				}
+				linea=flectura.readLine();
+			}
+			flectura.close();
+		} catch (IOException e) {
+			System.out.println("Error al manejar ficheros.");
+		}
+	}
+	
+	private Contacto componerContacto(){
+		String nom, direccion, municipio, provincia, cp, telefonoFijo, telefonoMovil;
 		
 		try {
 			System.out.println("Introduce nombre y apellidos: ");
-			nombre=teclado.readLine();
+			nom=teclado.readLine();
 			System.out.println("Introduce dirección: ");
 			direccion=teclado.readLine();
 			System.out.println("Introduce municipio: ");
@@ -36,16 +112,82 @@ public class AgendaDeContactos {
 			System.out.println("Introduce provincia: ");
 			provincia=teclado.readLine();
 			System.out.println("Introduce código postal: ");
-			cp=teclado.read();
+			cp=teclado.readLine();
 			System.out.println("Introduce teléfono fijo: ");
-			telefonoFijo=teclado.read();
+			telefonoFijo=teclado.readLine();
 			System.out.println("Introduce teléfono móvil: ");
-			telefonoMovil=teclado.read();
+			telefonoMovil=teclado.readLine();
 		}catch (IOException e) {
 			System.out.println("Error al introducir datos.");
-			return;
+			return null;
 		}
-
+		
+		return new Contacto(nom, direccion, municipio, provincia, cp, telefonoFijo, telefonoMovil);
+	}
+	
+	private String pedirNombre(){
+		String nombre="";
+		try {
+			System.out.println("Introduzca el nombre de contacto: ");
+			nombre = teclado.readLine();
+		} catch (IOException e) {
+			System.out.println("Error al introducir datos.");
+		}
+		return nombre;
+	}
+	
+	private void modificarContacto(String nombre){
+		try {
+			flectura=new BufferedReader(new FileReader(f));
+			fescritura=new BufferedWriter(new FileWriter(tmp));
+			String linea=flectura.readLine();
+			
+			while(linea!=null){
+				Contacto c=descomponerRegistro(linea);
+				if(!c.getNombre().toLowerCase().equals(nombre.toLowerCase())){
+					fescritura.write(linea);
+					fescritura.newLine();
+				}else{
+					Contacto con=componerContacto();
+					fescritura.write(componerRegistro(con));
+					fescritura.newLine();
+				}
+				linea=flectura.readLine();
+			}
+		fescritura.flush();
+		fescritura.close();
+		flectura.close();
+		
+		f.delete();
+		tmp.renameTo(f);
+		} catch (IOException e) {
+			System.out.println("Error al manejar ficheros.");
+		}
+	}
+	
+	private void borrarContacto(String nombre){
+		try {
+			flectura=new BufferedReader(new FileReader(f));
+			fescritura=new BufferedWriter(new FileWriter(tmp));
+			String linea=flectura.readLine();
+			
+			while(linea!=null){
+				Contacto c=descomponerRegistro(linea);
+				if(!c.getNombre().toLowerCase().equals(nombre.toLowerCase())){
+					fescritura.write(linea);
+					fescritura.newLine();
+				}
+				linea=flectura.readLine();
+			}
+		fescritura.flush();
+		fescritura.close();
+		flectura.close();
+		
+		f.delete();
+		tmp.renameTo(f);
+		} catch (IOException e) {
+			System.out.println("Error al manejar ficheros.");
+		}
 	}
 	
 	public void menu(){
@@ -75,12 +217,16 @@ public class AgendaDeContactos {
 				this.nuevoContacto();
 				break;
 			case 2:
+				this.verContacto(this.pedirNombre());
 				break;
 			case 3:
+				this.modificarContacto(this.pedirNombre());
 				break;
 			case 4:
+				this.borrarContacto(this.pedirNombre());
 				break;
 			case 5:
+				this.listarContactos();
 				break;
 			case 6:
 				System.out.println("Progama terminado.");

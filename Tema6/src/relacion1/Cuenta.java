@@ -1,65 +1,65 @@
 package relacion1;
 
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileWriter;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
+import java.util.StringTokenizer;
 
 public class Cuenta {
-		private static void cuentaPalabras(File f) throws IOException{
+	
+	private static int cuentaPalabras(File f){
+		int n=0;
+
+		try {
+			BufferedReader flectura = new BufferedReader(new FileReader(f));
 			
-			if(f==null){
-				System.out.println("ERROR. El archivo no existe");
-				return;
-			}
-			
-			int cuentaPalabras=1;
-			int posicion=0;
-			String texto;
-			
-			BufferedReader teclado= new BufferedReader(new InputStreamReader(System.in));
-			BufferedWriter pantalla = new BufferedWriter(new FileWriter(f));
-			
-			do{
-				System.out.println("Introduzca texto");
-				texto=teclado.readLine();
-				pantalla.write(texto);
-				pantalla.newLine();
-				
-			}while(texto.isEmpty());
-			
-			pantalla.flush();
-			pantalla.close();
-			teclado.close();
-			
-			for(int i =0;i<texto.length();i++){
-				if(texto.substring(posicion, posicion+1).equals(" ")){
-					cuentaPalabras++;
-					posicion++;
-				}else{
-					posicion++;
+			String linea=flectura.readLine();
+			while(linea!=null){
+				if(!linea.matches("$")){  //Filtro para no contar con las líneas en blanco
+					String[] palabras= new String[linea.length()];
+					palabras=(linea.split(" "));
+					n+=palabras.length;
 				}
+				linea=flectura.readLine();
 			}
-			
-			System.out.println("Palabras: "+cuentaPalabras);
-			
+			flectura.close();
+		} catch (FileNotFoundException e) {
+			System.out.println("Error. No se puede abrir el fichero.");
+		} catch (IOException e) {
+			System.out.println("Error. No se ha podido leer el fichero.");
 		}
-		
-		public static void main(String[] args) throws IOException {
-			
-			
-			String ruta;
-			BufferedReader teclado = new BufferedReader(new InputStreamReader(System.in));
-			System.out.println("Introduce la ruta del archivo");
-			ruta=teclado.readLine();
-			File f = new File(ruta);
-			
-			cuentaPalabras(f);
-			
-			teclado.close();
-			
-			
-		}
+		return n;
 	}
+	
+	private static int cuentaPalabrasST(File f){
+		int n=0;
+
+		try {
+			BufferedReader flectura = new BufferedReader(new FileReader(f));
+			
+			String linea=flectura.readLine();
+			while(linea!=null){
+			    StringTokenizer st = new StringTokenizer(linea);
+				n+=st.countTokens();
+				linea=flectura.readLine();
+			}
+			flectura.close();
+		} catch (FileNotFoundException e) {
+			System.out.println("Error. No se puede abrir el fichero.");
+		} catch (IOException e) {
+			System.out.println("Error. No se ha podido leer el fichero.");
+		}
+		return n;
+
+	}
+
+	public static void main(String[] args) {
+		File f=new File("C:\\Users\\usuario\\Documents\\cursos\\DAW\\PRO\\svn-programacion\\Tema6\\src\\relacion1\\arc.txt");
+
+		System.out.println("Utilizando métodos de la clase String. \nEl fichero tiene "+cuentaPalabras(f)+" palabras.");
+		System.out.println("\nUtilizando la clase StringTokenizer().\nEl fichero tiene "+cuentaPalabrasST(f)+" palabras.");
+	}
+
+}
