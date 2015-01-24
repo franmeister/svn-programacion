@@ -229,7 +229,7 @@ public class AgendaDeContactos {
 				this.listarContactos();
 				break;
 			case 6:
-				System.out.println("Progama terminado.");
+				System.out.println("Programa terminado.");
 				break;
 			default:
 				System.out.println("Debe introducir un numero entre 1 y 6");

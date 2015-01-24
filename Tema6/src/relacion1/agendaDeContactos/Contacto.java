@@ -1,32 +1,24 @@
 package relacion1.agendaDeContactos;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+
 public class Contacto {
 	private String nombre, direccion, municipio, provincia, cp, telefonoFijo, telefonoMovil;
+	private BufferedReader teclado=new BufferedReader(new InputStreamReader(System.in));
 
 	public Contacto(String nombre, String direccion, String municipio,
 			String provincia, String cp, String telefonoFijo,
 			String telefonoMovil) {
-		if(verificarNombre(nombre)){
-			this.nombre = nombre;
-		}
-		if(verificarDireccion(direccion)){
-			this.direccion = direccion;
-		}
-		if(verificarMunicipio(municipio)){
-			this.municipio = municipio;
-		}
-		if(verificarProvincia(provincia)){
-			this.provincia = provincia;
-		}
-		if(verificarCP(cp)){
-			this.cp = cp;
-		}
-		if(verificarTelefono(telefonoFijo,"fijo")){
-			this.telefonoFijo = telefonoFijo;
-		}
-		if(verificarTelefono(telefonoMovil,"móvil")){
-			this.telefonoMovil = telefonoMovil;
-		}
+		
+		this.verificarNombre(nombre);
+		this.verificarDireccion(direccion);
+		this.verificarMunicipio(municipio);
+		this.verificarProvincia(provincia);
+		this.verificarCP(cp);
+		this.verificarTelefono(telefonoFijo,"fijo");
+		this.verificarTelefono(telefonoMovil,"movil");
 	}
 	
 	public String getNombre() {
@@ -57,52 +49,77 @@ public class Contacto {
 		return telefonoMovil;
 	}
 
-	private boolean verificarNombre(String s){
-		if(s.length()>60){
-			//System.out.println("Error. Nombre y apellidos no puede tener mas de 60 carácteres.");
-			return false;
+	private void verificarNombre(String nom){
+		if(nom.length()>60){
+			this.nombre = nom.substring(0,60);
+			return;
 		}
-		return true;
+		this.nombre = nom;
+
 	}
 	
-	private boolean verificarDireccion(String s){
-		if(s.length()>40){
-			//System.out.println("Error. La dirección no puede tener mas de 40 carácteres.");
-			return false;
+	private void verificarDireccion(String dir){
+		if(dir.length()>40){
+			this.direccion = dir.substring(0,40);
+			return;
 		}
-		return true;
+		this.direccion = dir;
 	}
 	
-	private boolean verificarCP(String s){
-		if(!s.matches("^\\d{5}$")){
-			//System.out.println("Error. El código postal debe de tener 5 números.");
-			return false;
+	private void verificarCP(String cp){
+		boolean v=false;
+		
+		while(!v){
+			if(!cp.matches("^\\d{5}$")){
+				System.out.println("Error, el Código Postal debe ser número de 5 cifras. Introduce de nuevo: ");
+				try {
+					cp=teclado.readLine();
+				} catch (IOException e) {
+					System.out.println("Error al introducir datos");
+				}
+				continue;
+			}
+			v=true;
+			this.cp=cp;
 		}
-		return true;
 	}
 	
-	private boolean verificarMunicipio(String s){
-		if(s.length()>30){
-			//System.out.println("Error. El municipio no puede tener mas de 30 carácteres.");
-			return false;
+	private void verificarMunicipio(String mun){
+		if(mun.length()>30){
+			this.municipio = mun.substring(0,30);
+			return;
 		}
-		return true;
+		this.municipio = mun;
 	}
 	
-	private boolean verificarProvincia(String s){
-		if(s.length()>15){
-			//System.out.println("Error. La provincia no puede tener mas de 15 carácteres.");
-			return false;
+	private void verificarProvincia(String pro){
+		if(pro.length()>15){
+			this.provincia = pro.substring(0,15);
+			return;
 		}
-		return true;
+		this.provincia = pro;
 	}
 	
-	private boolean verificarTelefono(String s, String tipo){
-		if(!s.matches("^\\d{9}$")){
-			//System.out.println("Error. El teléfono "+tipo+" debe de tener 9 números.");
-			return false;
+	private void verificarTelefono(String tel, String tipo){
+		boolean v=false;
+		
+		while(!v){
+			if(!tel.matches("^\\d{9}$")){
+				System.out.println("Error, el teléfono "+tipo+" debe ser número de 9 cifras. Introduce teléfono de nuevo: ");
+				try {
+					tel=teclado.readLine();
+				} catch (IOException e) {
+					System.out.println("Error al introducir datos");
+				}
+				continue;
+			}
+			v=true;
+			if(tipo.equals("fijo")){
+				this.telefonoFijo=tel;
+			}else{
+				this.telefonoMovil=tel;
+			}
 		}
-		return true;
 	}
 
 	@Override
@@ -112,6 +129,5 @@ public class Contacto {
 				+ "\n\t CP=" + cp + "\n\t Teléfono Fijo=" + telefonoFijo
 				+ "\n\t Teléfono Móvil=" + telefonoMovil;
 	}
-	
 	
 }
