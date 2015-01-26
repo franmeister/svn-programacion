@@ -1,120 +1,262 @@
 package biblioteca;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.Calendar;
-import java.util.Vector;
 
 public class Biblioteca {
 	
-	private Vector<Articulo> articulos=new Vector<Articulo>();
-	private Vector<Libro> libros=new Vector<Libro>();
-	private Vector<Cdrom> cdrom=new Vector<Cdrom>();
-	private Vector<Revista> revistas=new Vector<Revista>();
-	private Vector<Usuario> usuarios=new Vector<Usuario>();
-	private Prestamo[] prestamos=new Prestamo[1000];
-	private int posicion=0;
+	private BufferedReader flectura;
+	private BufferedWriter fescritura;
+	private File articulos, libros, cdroms, revistas, usuarios, prestamos, directorioPadre;
+	private File articulostmp, librostmp, cdromstmp, revistastmp, usuariostmp, prestamostmp;
+
+	public Biblioteca(String ruta){
+		directorioPadre=new File(ruta);
+		
+		if(!directorioPadre.exists()||!directorioPadre.isDirectory()){
+			System.out.println("Error. La dirección introducida no es un directorio.");
+			System.exit(0);
+		}
+		
+		articulos=new File(ruta,"articulos.txt");
+		libros=new File(ruta,"libros.txt");
+		cdroms=new File(ruta,"cdroms.txt");
+		revistas=new File(ruta,"revistas.txt");
+		usuarios=new File(ruta,"usuarios.txt");
+		prestamos=new File(ruta,"prestamos.txt");
+		articulostmp=new File(ruta,"articulos.txt.tmp");
+		librostmp=new File(ruta,"libros.txt.tmp");
+		cdromstmp=new File(ruta,"cdroms.txt.tmp");
+		revistastmp=new File(ruta,"revistas.txt.tmp");
+		usuariostmp=new File(ruta,"usuarios.txt.tmp");
+		prestamostmp=new File(ruta,"prestamos.txt.tmp");
+	}
+	
 	
 	private Libro crearLibro(){
-		String isbn;
-		int posLibro;
-		do{
-			isbn = PedirDatos.leerCadena("Introduce ISBN:");
-			posLibro=this.buscarLibro(isbn);
-			if(posLibro!=-1){
-				System.out.println("Error, el ISBN ya existe.");
-			}
-		}while(posLibro!=-1);
+		String isbn = PedirDatos.leerCadena("Introduce ISBN:");
 		String signatura = PedirDatos.leerCadena("Introduce Signatura:");
 		String autor = PedirDatos.leerCadena("Introduce Autor:");
 		String titulo = PedirDatos.leerCadena("Introduce Título:");
 		String materia = PedirDatos.leerCadena("Introduce Materia:");
 		String editorial = PedirDatos.leerCadena("Introduce Editorial:");
-		return new Libro(isbn, signatura, titulo, autor, materia, editorial);
+		return new Libro(isbn.replace(":"," "), signatura.replace(":"," "), titulo.replace(":"," "),
+				autor.replace(":"," "), materia.replace(":"," "), editorial.replace(":"," "));
 	}
 	
 	private Articulo crearArticulo(){
-		int cod, posArt;
-		do{
-			cod = PedirDatos.leerEntero("Introduce Código del Artículo:");
-			posArt=this.buscar("Articulo", cod);
-			if(posArt!=-1){
-				System.out.println("Error, el código ya existe.");
-			}
-		}while(posArt!=-1);
+		int cod = PedirDatos.leerEntero("Introduce Código del Artículo:");
 		String autor = PedirDatos.leerCadena("Introduce Autor:");
 		String titulo = PedirDatos.leerCadena("Introduce Título:");
 		int numPaginas = PedirDatos.leerEntero("Introduce número de páginas:");
-		return new Articulo(cod, titulo, autor, numPaginas);
+		return new Articulo(cod, titulo.replace(":"," "), autor.replace(":"," "), numPaginas);
 	}
 	
 	private Cdrom crearCdrom(){
-		int cod, posCD;
-		do{
-			cod = PedirDatos.leerEntero("Introduce Código del CD-ROM:");
-			posCD=this.buscar("CD-ROM", cod);
-			if(posCD!=-1){
-				System.out.println("Error, el código ya existe.");
-			}
-		}while(posCD!=-1);
+		int cod = PedirDatos.leerEntero("Introduce Código del CD-ROM:");
 		String signatura = PedirDatos.leerCadena("Introduce Signatura:");
 		String autor = PedirDatos.leerCadena("Introduce Autor:");
 		String titulo = PedirDatos.leerCadena("Introduce Título:");
 		String materia = PedirDatos.leerCadena("Introduce Materia:");
 		String editorial = PedirDatos.leerCadena("Introduce Editorial:");
-		return new Cdrom(cod, signatura, titulo, autor, materia, editorial);
+		return new Cdrom(cod, signatura.replace(":"," "), titulo.replace(":"," "), autor.replace(":"," "),
+				materia.replace(":"," "), editorial.replace(":"," "));
 	}
 
 	private Revista crearRevista(){
-		int cod, posRev;
-		do{
-			cod = PedirDatos.leerEntero("Introduce Código de la Revista:");
-			posRev=this.buscar("Revista", cod);
-			if(posRev!=-1){
-				System.out.println("Error, el código ya existe.");
-			}
-		}while(posRev!=-1);
+		int cod = PedirDatos.leerEntero("Introduce Código de la Revista:");
 		String signatura = PedirDatos.leerCadena("Introduce Signatura:");
 		String materia = PedirDatos.leerCadena("Introduce Materia:");
 		String nombre = PedirDatos.leerCadena("Introduce Nombre:");
-		return new Revista(cod, signatura, nombre, materia);
+		return new Revista(cod, signatura.replace(":"," "), nombre.replace(":"," "), materia.replace(":"," "));
 	}
 	
 	private Usuario crearUsuario(){
-		int cod, posUsu;
-		do{
-			cod = PedirDatos.leerEntero("Introduce Código del Usuario:");
-			posUsu=this.buscar("Usuario", cod);
-			if(posUsu!=-1){
-				System.out.println("Error, el código ya existe.");
-			}
-		}while(posUsu!=-1);
+		int cod = PedirDatos.leerEntero("Introduce Código del Usuario:");
 		String nombre = PedirDatos.leerCadena("Introduce Nombre:");
 		String apellido1 = PedirDatos.leerCadena("Introduce Primer Apellido:");
 		String apellido2 = PedirDatos.leerCadena("Introduce Segundo Apellido:");
-		return new Usuario(cod, nombre, apellido1, apellido2);
+		return new Usuario(cod, nombre.replace(":"," "), apellido1.replace(":"," "), apellido2.replace(":"," "));
 	}
 
+	private String componerRegistroLibro(Libro l){
+		String registro="";
+		
+		registro=l.getIsbn()+":"+l.getSignatura()+":"+l.getTitulo()+":"+l.getAutor()+
+				":"+l.getMateria()+":"+l.getEditorial();
+		
+		return registro;
+	}
+	
+	private String componerRegistroArticulo(Articulo a){
+		String registro="";
+		
+		registro=a.getCodArticulo()+":"+a.getTitulo()+":"+a.getAutor()+":"+a.getNumPaginas();
+		
+		return registro;
+	}
+	
+	private String componerRegistroCdrom(Cdrom c){
+		String registro="";
+		
+		registro=c.getCodCdrom()+":"+c.getSignatura()+":"+c.getTitulo()+":"+c.getAutor()+":"+c.getMateria()+":"+c.getEditorial();
+		
+		return registro;
+	}
+	
+	private String componerRegistroRevista(Revista r){
+		String registro="";
+		
+		registro=r.getCodRevista()+":"+r.getSignatura()+";"+r.getNombre()+":"+r.getMateria();
+		
+		return registro;
+	}
+	
+	private String componerRegistroUsuario(Usuario u){
+		String registro="";
+		
+		registro=u.getCodUsuario()+":"+u.getNombre()+":"+u.getApellido1()+":"+u.getApellido2();
+				
+		return registro;
+	}
+	
 	private void nuevoMaterial(String material){
 		switch (material) {
 		case "Libro":
-			this.libros.add(crearLibro());
+			Libro l=this.crearLibro();
+			
+			try{
+				flectura=new BufferedReader(new FileReader(libros));
+				fescritura=new BufferedWriter(new FileWriter(librostmp));
+				
+				String linea=flectura.readLine();
+				while(linea!=null){
+					fescritura.write(linea);
+					fescritura.newLine();
+					linea=flectura.readLine();
+				}
+
+				fescritura.write(componerRegistroLibro(l));
+				fescritura.flush();
+				fescritura.close();
+				flectura.close();
+				
+				libros.delete();
+				librostmp.renameTo(libros);
+			}catch (IOException e) {
+				System.out.println("Error al manejar ficheros.");
+			}
 			break;
 		case "Articulo":
-			this.articulos.add(crearArticulo());
+			Articulo a=this.crearArticulo();
+			
+			try{
+				flectura=new BufferedReader(new FileReader(articulos));
+				fescritura=new BufferedWriter(new FileWriter(articulostmp));
+				
+				String linea=flectura.readLine();
+				while(linea!=null){
+					fescritura.write(linea);
+					fescritura.newLine();
+					linea=flectura.readLine();
+				}
+
+				fescritura.write(componerRegistroArticulo(a));
+				fescritura.flush();
+				fescritura.close();
+				flectura.close();
+				
+				articulos.delete();
+				articulostmp.renameTo(articulos);
+			}catch (IOException e) {
+				System.out.println("Error al manejar ficheros.");
+			}
 			break;
 		case "CD-ROM":
-			this.cdrom.add(crearCdrom());
+			Cdrom c=this.crearCdrom();
+			
+			try{
+				flectura=new BufferedReader(new FileReader(cdroms));
+				fescritura=new BufferedWriter(new FileWriter(cdromstmp));
+				
+				String linea=flectura.readLine();
+				while(linea!=null){
+					fescritura.write(linea);
+					fescritura.newLine();
+					linea=flectura.readLine();
+				}
+
+				fescritura.write(componerRegistroCdrom(c));
+				fescritura.flush();
+				fescritura.close();
+				flectura.close();
+				
+				cdroms.delete();
+				cdromstmp.renameTo(cdroms);
+			}catch (IOException e) {
+				System.out.println("Error al manejar ficheros.");
+			}
 			break;
 		case "Revista":
-			this.revistas.add(crearRevista());
+			Revista r=this.crearRevista();
+			
+			try{
+				flectura=new BufferedReader(new FileReader(revistas));
+				fescritura=new BufferedWriter(new FileWriter(revistastmp));
+				
+				String linea=flectura.readLine();
+				while(linea!=null){
+					fescritura.write(linea);
+					fescritura.newLine();
+					linea=flectura.readLine();
+				}
+
+				fescritura.write(componerRegistroRevista(r));
+				fescritura.flush();
+				fescritura.close();
+				flectura.close();
+				
+				revistas.delete();
+				revistastmp.renameTo(revistas);
+			}catch (IOException e) {
+				System.out.println("Error al manejar ficheros.");
+			}
 			break;
 		case "Usuario":
-			this.usuarios.add(crearUsuario());
+			Usuario u=this.crearUsuario();
+			
+			try{
+				flectura=new BufferedReader(new FileReader(usuarios));
+				fescritura=new BufferedWriter(new FileWriter(usuariostmp));
+				
+				String linea=flectura.readLine();
+				while(linea!=null){
+					fescritura.write(linea);
+					fescritura.newLine();
+					linea=flectura.readLine();
+				}
+
+				fescritura.write(componerRegistroUsuario(u));
+				fescritura.flush();
+				fescritura.close();
+				flectura.close();
+				
+				usuarios.delete();
+				usuariostmp.renameTo(usuarios);
+			}catch (IOException e) {
+				System.out.println("Error al manejar ficheros.");
+			}
 			break;
 		default:
 			break;
 		}
 	}
-	
+	/*
 	private int buscar(String material, int cod){
 		switch (material) {
 		case "Revista":
@@ -264,7 +406,7 @@ public class Biblioteca {
 		}catch(Exception e){}
 		return -1;
 	}
-	
+	*/
 	private void prestarMaterial(String material){
 		int pos;
 		int usuario=PedirDatos.leerEntero("Introduce el código del usuario");
@@ -304,7 +446,7 @@ public class Biblioteca {
 		this.prestamos[posicion]=new Prestamo(usuario, codigo+"", material, fechaActual());
 		this.posicion++;
 	}
-	
+	/*
 	private void devolverMaterial(String material){
 		int pos;
 
@@ -335,7 +477,7 @@ public class Biblioteca {
 			this.prestamos[pos].setFechaDevolucion(fechaActual());
 		}
 	}
-		
+		*/
 	private void realizarPrestamo(){
 		int op=-1;
 		do{
@@ -422,10 +564,10 @@ public class Biblioteca {
 				this.nuevoMaterial(material);
 				break;
 			case 2:
-				this.modificarMaterial(material);
+				//this.modificarMaterial(material);
 				break;
 			case 3:
-				this.borrarMaterial(material);
+				//this.borrarMaterial(material);
 				break;
 			default:
 				System.out.println("Debe selecionar una opción correcta. Vuelva a intentarlo.");
@@ -451,6 +593,7 @@ public class Biblioteca {
 	
 			switch (opcion) {
 			case 0:
+				System.out.println("Programa terminado.");
 				break;
 			case 1:
 				this.menuMaterial("Libro");
@@ -471,7 +614,7 @@ public class Biblioteca {
 				this.realizarPrestamo();
 				break;
 			case 7:
-				this.devolverPrestamo();
+				//this.devolverPrestamo();
 				break;
 			default:
 				System.out.println("Debe selecionar una opción correcta. Vuelva a intentarlo.");

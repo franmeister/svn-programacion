@@ -51,19 +51,19 @@ public class Contacto {
 
 	private void verificarNombre(String nom){
 		if(nom.length()>60){
-			this.nombre = nom.substring(0,60);
+			this.nombre = nom.replace(":", " ").substring(0,60);
 			return;
 		}
-		this.nombre = nom;
+		this.nombre = nom.replace(":", " ");
 
 	}
 	
 	private void verificarDireccion(String dir){
 		if(dir.length()>40){
-			this.direccion = dir.substring(0,40);
+			this.direccion = dir.replace(":", " ").substring(0,40);
 			return;
 		}
-		this.direccion = dir;
+		this.direccion = dir.replace(":", " ");
 	}
 	
 	private void verificarCP(String cp){
@@ -86,10 +86,10 @@ public class Contacto {
 	
 	private void verificarMunicipio(String mun){
 		if(mun.length()>30){
-			this.municipio = mun.substring(0,30);
+			this.municipio = mun.replace(":", " ").substring(0,30);
 			return;
 		}
-		this.municipio = mun;
+		this.municipio = mun.replace(":", " ");
 	}
 	
 	private void verificarProvincia(String pro){
@@ -97,7 +97,7 @@ public class Contacto {
 			this.provincia = pro.substring(0,15);
 			return;
 		}
-		this.provincia = pro;
+		this.provincia = pro.replace(":", " ");
 	}
 	
 	private void verificarTelefono(String tel, String tipo){
