@@ -138,6 +138,8 @@ public class Biblioteca {
 	}
 	
 	private void nuevoMaterial(String material){
+		String[] registro=new String[5];
+
 		switch (material) {
 		case "Libro":
 			Libro l=this.crearLibro();
@@ -148,6 +150,15 @@ public class Biblioteca {
 				
 				String linea=flectura.readLine();
 				while(linea!=null){
+					registro=linea.split("::");
+					Libro l2=new Libro(registro[0], registro[1], registro[2], registro[3], registro[4], registro[5]);
+					if(l2.getIsbn().toLowerCase().equals(l.getIsbn().toLowerCase())){
+						System.out.println("Error. El ISBN introducido está repetido");
+						fescritura.close();
+						flectura.close();
+						librostmp.delete();
+						return;
+					}
 					fescritura.write(linea);
 					fescritura.newLine();
 					linea=flectura.readLine();
@@ -173,6 +184,15 @@ public class Biblioteca {
 				
 				String linea=flectura.readLine();
 				while(linea!=null){
+					registro=linea.split("::");	//no funciona
+					Articulo a2=new Articulo(Integer.parseInt(registro[0]), registro[1], registro[2], Integer.parseInt(registro[3]));
+					if(a2.getCodArticulo()==a.getCodArticulo()){
+						System.out.println("Error. El código introducido está repetido");
+						fescritura.close();
+						flectura.close();
+						librostmp.delete();
+						return;
+					}
 					fescritura.write(linea);
 					fescritura.newLine();
 					linea=flectura.readLine();
