@@ -131,7 +131,7 @@ public class Biblioteca {
 		registro=p.getCodUsuario()+"::"+p.getCodMaterial()+"::"+p.getMaterial()+"::"+p.getFechaPrestamo()+"::";
 		
 		try{
-				registro+=p.getFechaDevolucion();
+			registro+=p.getFechaDevolucion();
 		}catch(Exception e){}
 				
 		return registro;
@@ -268,141 +268,378 @@ public class Biblioteca {
 			break;
 		}
 	}
-	/*
-	private int buscar(String material, int cod){
-		switch (material) {
-		case "Revista":
-			for(int i=0;i<revistas.size();i++){
-				try{
-					if(this.revistas.elementAt(i).getCodRevista()==cod){
-						return i;
-					}
-				}catch(Exception e){}
-			}
-			break;
-		case "CD-ROM":
-			for(int i=0;i<cdrom.size();i++){
-				try{
-					if(this.cdrom.elementAt(i).getCodCdrom()==cod){
-						return i;
-					}	
-				}catch(Exception e){}
-			}
-			break;
-		case "Usuario":
-			for(int i=0;i<usuarios.size();i++){
-				try{
-					if(this.usuarios.elementAt(i).getCodUsuario()==cod){
-						return i;
-					}	
-				}catch(Exception e){}
-			}
-			break;
-		case "Articulo":
-			for(int i=0;i<articulos.size();i++){
-				try{
-					if(this.articulos.elementAt(i).getCodArticulo()==cod){
-						return i;
-					}	
-				}catch(Exception e){}
-			}
-			break;
-		default:
-			break;
-		}
-		return -1;
-	}
-	
-	private int buscarLibro(String isbn){
-		for(int i=0;i<libros.size();i++){
-			try{
-				if(this.libros.elementAt(i).getIsbn().equals(isbn)){
-					return i;
-				}
-			}catch(Exception e){}
-		}
-		return -1;
-	}
 	
 	private void modificarMaterial(String material){
-		int pos;
-
-		if(material.equals("Libro")){
-			String isbn=PedirDatos.leerCadena("Introduce el ISBN del libro a modificar: ");
-			pos=this.buscarLibro(isbn);
-			if(pos==-1){
-				System.out.println("No existe el libro con el ISBN "+isbn+".");
-				return;
-			}
-			this.libros.setElementAt(null, pos); //para poder usar el ISBN del libro que va a ser modificado
-			this.libros.setElementAt(crearLibro(),pos);
-			return;
-		}
-		int codigo=PedirDatos.leerEntero("Introduce el código del "+material+" a modificar: ");
-		pos=this.buscar(material,codigo);
-		if(pos==-1){
-			System.out.println("No existe "+material+" con el código "+codigo+".");
-			return;
-		}
+		String[] registro=new String[5];
+		int codigo;
+		boolean mod=false;
+		
 		switch (material) {
+		case "Libro":
+			String isbn=PedirDatos.leerCadena("Introduce el ISBN del libro a modificar: ");
+			
+			try {
+				flectura=new BufferedReader(new FileReader(libros));
+				fescritura=new BufferedWriter(new FileWriter(librostmp));
+				
+				String linea=flectura.readLine();
+				while(linea!=null){
+					registro=linea.split("::");
+					Libro l=new Libro(registro[0], registro[1], registro[2], registro[3], registro[4], registro[5]);
+					if(l.getIsbn().toLowerCase().equals(isbn.toLowerCase())){
+						l=crearLibro();
+						fescritura.write(componerRegistroLibro(l));
+						fescritura.newLine();
+						linea=flectura.readLine();
+						mod=true;
+						continue;
+					}
+					fescritura.write(linea);
+					fescritura.newLine();
+					linea=flectura.readLine();
+				}
+
+				fescritura.flush();
+				fescritura.close();
+				flectura.close();
+				
+				libros.delete();
+				librostmp.renameTo(libros);
+				flectura.close();
+			} catch (IOException e) {
+				System.out.println("Error al manejar ficheros.");
+			}
+			break;
 		case "Articulo":
-			this.articulos.setElementAt(null,pos);
-			this.articulos.setElementAt(crearArticulo(),pos);
-			break;
+			codigo=PedirDatos.leerEntero("Introduce el código del artículo a modificar: ");
+			
+			try {
+				flectura=new BufferedReader(new FileReader(articulos));
+				fescritura=new BufferedWriter(new FileWriter(articulostmp));
+				
+				String linea=flectura.readLine();
+				while(linea!=null){
+					registro=linea.split("::");
+					Articulo a=new Articulo(Integer.parseInt(registro[0]), registro[1], registro[2], Integer.parseInt(registro[3]));
+					if(a.getCodArticulo()==codigo){
+						a=crearArticulo();
+						fescritura.write(componerRegistroArticulo(a));
+						fescritura.newLine();
+						linea=flectura.readLine();
+						mod=true;
+						continue;
+					}
+					fescritura.write(linea);
+					fescritura.newLine();
+					linea=flectura.readLine();
+				}
+
+				fescritura.flush();
+				fescritura.close();
+				flectura.close();
+				
+				articulos.delete();
+				articulostmp.renameTo(articulos);
+				flectura.close();
+			} catch (IOException e) {
+				System.out.println("Error al manejar ficheros.");
+			}
+			break;		
 		case "CD-ROM":
-			this.cdrom.setElementAt(null,pos);
-			this.cdrom.setElementAt(crearCdrom(),pos);
-			break;
+			codigo=PedirDatos.leerEntero("Introduce el código del CD-ROM a modificar: ");
+			
+			try {
+				flectura=new BufferedReader(new FileReader(cdroms));
+				fescritura=new BufferedWriter(new FileWriter(cdromstmp));
+				
+				String linea=flectura.readLine();
+				while(linea!=null){
+					registro=linea.split("::");
+					Cdrom c=new Cdrom(Integer.parseInt(registro[0]), registro[1], registro[2], registro[3], registro[4], registro[5]);
+					if(c.getCodCdrom()==codigo){
+						c=crearCdrom();
+						fescritura.write(componerRegistroCdrom(c));
+						fescritura.newLine();
+						linea=flectura.readLine();
+						mod=true;
+						continue;
+					}
+					fescritura.write(linea);
+					fescritura.newLine();
+					linea=flectura.readLine();
+				}
+
+				fescritura.flush();
+				fescritura.close();
+				flectura.close();
+				
+				cdroms.delete();
+				cdromstmp.renameTo(cdroms);
+				flectura.close();
+			} catch (IOException e) {
+				System.out.println("Error al manejar ficheros.");
+			}
+			break;				
 		case "Revista":
-			this.revistas.setElementAt(null,pos);
-			this.revistas.setElementAt(crearRevista(),pos);
+			codigo=PedirDatos.leerEntero("Introduce el código de la Revista a modificar: ");
+			
+			try {
+				flectura=new BufferedReader(new FileReader(revistas));
+				fescritura=new BufferedWriter(new FileWriter(revistastmp));
+				
+				String linea=flectura.readLine();
+				while(linea!=null){
+					registro=linea.split("::");
+					Revista r=new Revista(Integer.parseInt(registro[0]), registro[1], registro[2], registro[3]);
+					if(r.getCodRevista()==codigo){
+						r=crearRevista();
+						fescritura.write(componerRegistroRevista(r));
+						fescritura.newLine();
+						linea=flectura.readLine();
+						mod=true;
+						continue;
+					}
+					fescritura.write(linea);
+					fescritura.newLine();
+					linea=flectura.readLine();
+				}
+
+				fescritura.flush();
+				fescritura.close();
+				flectura.close();
+				
+				revistas.delete();
+				revistastmp.renameTo(revistas);
+				flectura.close();
+			} catch (IOException e) {
+				System.out.println("Error al manejar ficheros.");
+			}
 			break;
 		case "Usuario":
-			this.usuarios.setElementAt(null,pos);
-			this.usuarios.setElementAt(crearUsuario(),pos);
+			codigo=PedirDatos.leerEntero("Introduce el código del Usuario a modificar: ");
+			
+			try {
+				flectura=new BufferedReader(new FileReader(usuarios));
+				fescritura=new BufferedWriter(new FileWriter(usuariostmp));
+				
+				String linea=flectura.readLine();
+				while(linea!=null){
+					registro=linea.split("::");
+					Usuario u=new Usuario(Integer.parseInt(registro[0]), registro[1], registro[2], registro[3]);
+					if(u.getCodUsuario()==codigo){
+						u=crearUsuario();
+						fescritura.write(componerRegistroUsuario(u));
+						fescritura.newLine();
+						linea=flectura.readLine();
+						mod=true;
+						continue;
+					}
+					fescritura.write(linea);
+					fescritura.newLine();
+					linea=flectura.readLine();
+				}
+
+				fescritura.flush();
+				fescritura.close();
+				flectura.close();
+				
+				usuarios.delete();
+				usuariostmp.renameTo(usuarios);
+				flectura.close();
+			} catch (IOException e) {
+				System.out.println("Error al manejar ficheros.");
+			}
 			break;
 		default:
 			break;	
 		}
+		
+		if(!mod){
+			System.out.println("El "+material+" a modificar no existe.");
+			return;
+		}
+		System.out.println("El "+material+" se ha modificado.");
+
+	}
+
+	private void borrarMaterial(String material){
+		String[] registro=new String[5];
+		int codigo;
+		boolean borrado=false;
+		
+		switch (material) {
+		case "Libro":
+			String isbn=PedirDatos.leerCadena("Introduce el ISBN del libro a modificar: ");
+			
+			try {
+				flectura=new BufferedReader(new FileReader(libros));
+				fescritura=new BufferedWriter(new FileWriter(librostmp));
+				
+				String linea=flectura.readLine();
+				while(linea!=null){
+					registro=linea.split("::");
+					Libro l=new Libro(registro[0], registro[1], registro[2], registro[3], registro[4], registro[5]);
+					if(l.getIsbn().toLowerCase().equals(isbn.toLowerCase())){
+						linea=flectura.readLine();
+						borrado=true;
+						continue;
+					}
+					fescritura.write(linea);
+					fescritura.newLine();
+					linea=flectura.readLine();
+				}
+
+				fescritura.flush();
+				fescritura.close();
+				flectura.close();
+				
+				libros.delete();
+				librostmp.renameTo(libros);
+				flectura.close();
+			} catch (IOException e) {
+				System.out.println("Error al manejar ficheros.");
+			}
+			break;
+		case "Articulo":
+			codigo=PedirDatos.leerEntero("Introduce el código del artículo a modificar: ");
+			
+			try {
+				flectura=new BufferedReader(new FileReader(articulos));
+				fescritura=new BufferedWriter(new FileWriter(articulostmp));
+				
+				String linea=flectura.readLine();
+				while(linea!=null){
+					registro=linea.split("::");
+					Articulo a=new Articulo(Integer.parseInt(registro[0]), registro[1], registro[2], Integer.parseInt(registro[3]));
+					if(a.getCodArticulo()==codigo){
+						linea=flectura.readLine();
+						borrado=true;
+						continue;
+					}
+					fescritura.write(linea);
+					fescritura.newLine();
+					linea=flectura.readLine();
+				}
+
+				fescritura.flush();
+				fescritura.close();
+				flectura.close();
+				
+				articulos.delete();
+				articulostmp.renameTo(articulos);
+				flectura.close();
+			} catch (IOException e) {
+				System.out.println("Error al manejar ficheros.");
+			}
+			break;		
+		case "CD-ROM":
+			codigo=PedirDatos.leerEntero("Introduce el código del CD-ROM a modificar: ");
+			
+			try {
+				flectura=new BufferedReader(new FileReader(cdroms));
+				fescritura=new BufferedWriter(new FileWriter(cdromstmp));
+				
+				String linea=flectura.readLine();
+				while(linea!=null){
+					registro=linea.split("::");
+					Cdrom c=new Cdrom(Integer.parseInt(registro[0]), registro[1], registro[2], registro[3], registro[4], registro[5]);
+					if(c.getCodCdrom()==codigo){
+						linea=flectura.readLine();
+						borrado=true;
+						continue;
+					}
+					fescritura.write(linea);
+					fescritura.newLine();
+					linea=flectura.readLine();
+				}
+
+				fescritura.flush();
+				fescritura.close();
+				flectura.close();
+				
+				cdroms.delete();
+				cdromstmp.renameTo(cdroms);
+				flectura.close();
+			} catch (IOException e) {
+				System.out.println("Error al manejar ficheros.");
+			}
+			break;				
+		case "Revista":
+			codigo=PedirDatos.leerEntero("Introduce el código de la Revista a modificar: ");
+			
+			try {
+				flectura=new BufferedReader(new FileReader(revistas));
+				fescritura=new BufferedWriter(new FileWriter(revistastmp));
+				
+				String linea=flectura.readLine();
+				while(linea!=null){
+					registro=linea.split("::");
+					Revista r=new Revista(Integer.parseInt(registro[0]), registro[1], registro[2], registro[3]);
+					if(r.getCodRevista()==codigo){
+						linea=flectura.readLine();
+						borrado=true;
+						continue;
+					}
+					fescritura.write(linea);
+					fescritura.newLine();
+					linea=flectura.readLine();
+				}
+
+				fescritura.flush();
+				fescritura.close();
+				flectura.close();
+				
+				revistas.delete();
+				revistastmp.renameTo(revistas);
+				flectura.close();
+			} catch (IOException e) {
+				System.out.println("Error al manejar ficheros.");
+			}
+			break;
+		case "Usuario":
+			codigo=PedirDatos.leerEntero("Introduce el código del Usuario a modificar: ");
+			
+			try {
+				flectura=new BufferedReader(new FileReader(usuarios));
+				fescritura=new BufferedWriter(new FileWriter(usuariostmp));
+				
+				String linea=flectura.readLine();
+				while(linea!=null){
+					registro=linea.split("::");
+					Usuario u=new Usuario(Integer.parseInt(registro[0]), registro[1], registro[2], registro[3]);
+					if(u.getCodUsuario()==codigo){
+						linea=flectura.readLine();
+						borrado=true;
+						continue;
+					}
+					fescritura.write(linea);
+					fescritura.newLine();
+					linea=flectura.readLine();
+				}
+
+				fescritura.flush();
+				fescritura.close();
+				flectura.close();
+				
+				usuarios.delete();
+				usuariostmp.renameTo(usuarios);
+				flectura.close();
+			} catch (IOException e) {
+				System.out.println("Error al manejar ficheros.");
+			}
+			break;
+		default:
+			break;	
+		}
+		
+		if(!borrado){
+			System.out.println("El "+material+" a borrar no existe.");
+			return;
+		}
+		System.out.println("El "+material+" se ha borrado.");
+
 	}
 	
-	private void borrarMaterial(String material){
-		int pos;
-
-		if(material.equals("Libro")){
-			String isbn=PedirDatos.leerCadena("Introduce el ISBN del libro a borrar: ");
-			pos=this.buscarLibro(isbn);
-			if(pos==-1){
-				System.out.println("No existe el libro con el ISBN "+isbn+".");
-				return;
-			}
-			this.libros.remove(pos);
-			return;
-		}
-		int codigo=PedirDatos.leerEntero("Introduce el código del "+material+" a borrar: ");
-		pos=this.buscar(material,codigo);
-		if(pos==-1){
-			System.out.println("No existe "+material+" con el código "+codigo+".");
-			return;
-		}
-		switch (material) {
-		case "Articulo":
-			this.articulos.remove(pos);
-			break;
-		case "CD-ROM":
-			this.cdrom.remove(pos);
-			break;
-		case "Revista":
-			this.revistas.remove(pos);
-			break;
-		case "Usuario":
-			this.usuarios.remove(pos);
-			break;
-		default:
-			break;	
-		}
-	}
-	*/
 	private String fechaActual(){
 		 Calendar c = Calendar.getInstance();
 	     return c.getTime()+"";
@@ -426,6 +663,8 @@ public class Biblioteca {
 			
 			prestamos.delete();
 			prestamostmp.renameTo(prestamos);	
+			
+			System.out.println("Se ha prestado el material.");
 		} catch (IOException e) {
 			System.out.println("Error al manejar ficheros.");
 		}
@@ -450,7 +689,7 @@ public class Biblioteca {
 				}
 				linea=flectura.readLine();
 			}
-			flectura.close();	//Cierro para que a continuación vuelva a leer desde la 1º línea
+			flectura.close();
 		}catch (IOException e) {
 			System.out.println("Error al manejar ficheros.");
 		}
@@ -511,7 +750,7 @@ public class Biblioteca {
 				System.out.println("No existe el libro con el ISBN "+isbn+".");
 				return;
 			}
-			p=new Prestamo(usuario, isbn, material, fechaActual());
+			p=new Prestamo(usuario, isbn, material, fechaActual(),"");
 
 			if(this.estaPrestado(p)){
 				System.out.println("El libro está prestado.");
@@ -543,7 +782,7 @@ public class Biblioteca {
 				System.out.println("No existe el Artículo con el código "+codigo+".");
 				return;
 			}
-			p=new Prestamo(usuario, codigo+"", material, fechaActual());
+			p=new Prestamo(usuario, codigo+"", material, fechaActual(),"");
 
 			if(this.estaPrestado(p)){
 				System.out.println("El "+material+" está prestado.");
@@ -576,7 +815,7 @@ public class Biblioteca {
 				return;
 			}
 			
-			p=new Prestamo(usuario, codigo+"", material, fechaActual());
+			p=new Prestamo(usuario, codigo+"", material, fechaActual(),"");
 
 			if(this.estaPrestado(p)){
 				System.out.println("El "+material+" está prestado.");
@@ -609,7 +848,7 @@ public class Biblioteca {
 				return;
 			}
 			
-			p=new Prestamo(usuario, codigo+"", material, fechaActual());
+			p=new Prestamo(usuario, codigo+"", material, fechaActual(),"");
 		
 			if(this.estaPrestado(p)){
 				System.out.println("La "+material+" está prestada.");
@@ -617,12 +856,14 @@ public class Biblioteca {
 			}
 			registrarPrestamo(p);
 			break;
+		default:
+			break;	
 		}
 	}
 
 	
 	private void devolverMaterial(String material){
-		String codigo;
+		int codigo;
 		String[] registro=new String[6];
 		Prestamo p;
 		String linea;
@@ -664,7 +905,7 @@ public class Biblioteca {
 			
 			return;
 		}
-		codigo = PedirDatos.leerCadena("Introduce el código del "+material+"  a prestar: ");
+		codigo = PedirDatos.leerEntero("Introduce el código del "+material+"  a prestar: ");
 
 		try {
 			flectura = new BufferedReader(new FileReader(prestamos));
@@ -673,7 +914,7 @@ public class Biblioteca {
 			linea = flectura.readLine();
 			while (linea != null) {
 				registro = linea.split("::");
-				if (registro[1].equals(codigo) && registro[2].equals(material)) {
+				if (registro[1].equals(codigo+"") && registro[2].equals(material)) {
 					try {
 						registro[4] = registro[4]; // Para que salte el error si
 													// la fecha devolución está
@@ -787,10 +1028,10 @@ public class Biblioteca {
 				this.nuevoMaterial(material);
 				break;
 			case 2:
-				//this.modificarMaterial(material);
+				this.modificarMaterial(material);
 				break;
 			case 3:
-				//this.borrarMaterial(material);
+				this.borrarMaterial(material);
 				break;
 			default:
 				System.out.println("Debe selecionar una opción correcta. Vuelva a intentarlo.");

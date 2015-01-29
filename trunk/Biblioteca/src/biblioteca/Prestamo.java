@@ -7,13 +7,6 @@ public class Prestamo {
 	private String fechaPrestamo;
 	private String fechaDevolucion;
 	
-	public Prestamo(int codUsuario, String codMaterial, String material,
-			String fechaPrestamo) {
-		this.codUsuario = codUsuario;
-		this.codMaterial = codMaterial;
-		this.material = material;
-		this.fechaPrestamo = fechaPrestamo;
-	}
 	
 	public Prestamo(int codUsuario, String codMaterial, String material,
 			String fechaPrestamo, String fechaDevolucion) {
