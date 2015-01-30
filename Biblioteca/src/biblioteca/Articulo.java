@@ -1,11 +1,14 @@
 package biblioteca;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+
 public class Articulo {
 	private int codArticulo;
 	private String titulo;
 	private String autor;
 	private int numPaginas;
-	//private Vector keywords;
 	
 	public Articulo(){
 		
@@ -16,7 +19,6 @@ public class Articulo {
 		this.titulo = titulo;
 		this.autor = autor;
 		this.numPaginas = numPaginas;
-		//this.keywords = keywords;
 	}
 
 	public int getCodArticulo() {
@@ -51,18 +53,9 @@ public class Articulo {
 		this.numPaginas = numPaginas;
 	}
 
-	/*public Vector getKeywords() {
-		return keywords;
-	}
-
-	public void setKeywords(Vector keywords) {
-		this.keywords = keywords;
-	}*/
-
 	public String toString() {
 		return "Código de Articulo:" + codArticulo + "\nTítulo:" + titulo
 				+ "\nAutor:" + autor + "\nNúmero de Páginas:" + numPaginas;
-				//+ "\nkeywords:" + keywords;
 	}
 	
 	public boolean equals(Articulo a){
@@ -70,6 +63,27 @@ public class Articulo {
 			return true;
 		}
 		return false;
+	}
+	
+	public void pedirArticulo(boolean modificar){	//Si se llama desde modificar material no pedira codigo
+		BufferedReader teclado=new BufferedReader(new InputStreamReader(System.in));
+
+		try{
+			if(!modificar){
+				System.out.println("Introduce Código del Artículo:");
+				this.codArticulo = Integer.parseInt(teclado.readLine());
+			}
+			System.out.println("Introduce Autor:");
+			this.autor = teclado.readLine();
+			System.out.println("Introduce Título:");
+			this.titulo = teclado.readLine();
+			System.out.println("Introduce número de páginas:");
+			this.numPaginas = Integer.parseInt(teclado.readLine());
+		}catch(IOException e){
+			System.out.println("Error al introducir datos.");
+		}catch(NumberFormatException e){
+			System.out.println("El código y el número de página debe de ser un número.");
+		}
 	}
 		
 }

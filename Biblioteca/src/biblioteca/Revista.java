@@ -1,5 +1,9 @@
 package biblioteca;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+
 public class Revista {
 	private int codRevista;
 	private String signatura;
@@ -60,5 +64,27 @@ public class Revista {
 			return true;
 		}
 		return false;
+	}
+	
+
+	public void pedirRevista(boolean modificar){	//Si se llama desde modificar material no pedira codigo
+		BufferedReader teclado=new BufferedReader(new InputStreamReader(System.in));
+
+		try{
+			if(!modificar){
+				System.out.println("Introduce Código de la Revista:");
+				this.codRevista = Integer.parseInt(teclado.readLine());
+			}
+			System.out.println("Introduce Signatura:");
+			this.signatura = teclado.readLine();
+			System.out.println("Introduce Materia:");
+			this.materia = teclado.readLine();
+			System.out.println("Introduce Nombre:");
+			this.nombre = teclado.readLine();
+		}catch(IOException e){
+			System.out.println("Error al introducir datos.");
+		}catch(NumberFormatException e){
+			System.out.println("El código debe de ser un número.");
+		}
 	}
 }

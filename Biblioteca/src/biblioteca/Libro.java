@@ -1,5 +1,9 @@
 package biblioteca;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+
 public class Libro {
 	private String isbn;
 	private String signatura;
@@ -81,5 +85,28 @@ public class Libro {
 			return true;
 		}
 		return false;
+	}
+	
+	public void pedirLibro(boolean modificar){	//Si se llama desde modificar material no pedira isbn
+		BufferedReader teclado=new BufferedReader(new InputStreamReader(System.in));
+
+		try{
+			if(!modificar){
+				System.out.println("Introduce ISBN:");
+				this.isbn = teclado.readLine();
+			}
+			System.out.println("Introduce Signatura:");
+			this.signatura = teclado.readLine();
+			System.out.println("Introduce Autor:");
+			this.autor = teclado.readLine();
+			System.out.println("Introduce Título:");
+			this.titulo = teclado.readLine();
+			System.out.println("Introduce Materia:");
+			this.materia = teclado.readLine();
+			System.out.println("Introduce Editorial:");
+			this.editorial = teclado.readLine();
+		}catch(IOException e){
+			System.out.println("Error al introducir datos.");
+		}
 	}
 }
