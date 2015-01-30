@@ -1,5 +1,9 @@
 package biblioteca;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+
 public class Usuario {
 	private int codUsuario;
 	private String nombre;
@@ -61,6 +65,28 @@ public class Usuario {
 		}
 		return false;
 	}
+	
+	public void pedirUsuario(boolean modificar){	//Si se llama desde modificar material no pedira codigo
+		BufferedReader teclado=new BufferedReader(new InputStreamReader(System.in));
+
+		try{
+			if(!modificar){
+				System.out.println("Introduce Código del Usuario:");
+				this.codUsuario = Integer.parseInt(teclado.readLine());
+			}
+			System.out.println("Introduce Nombre:");
+			this.nombre = teclado.readLine();
+			System.out.println("Introduce Primer Apellido:");
+			this.apellido1 =teclado.readLine();
+			System.out.println("Introduce Segundo Apellido:");
+			this.apellido2 = teclado.readLine();
+		}catch(IOException e){
+			System.out.println("Error al introducir datos.");
+		}catch(NumberFormatException e){
+			System.out.println("El código debe de ser un número.");
+		}
+	}
+
 	
 	
 }

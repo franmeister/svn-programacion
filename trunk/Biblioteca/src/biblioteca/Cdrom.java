@@ -1,5 +1,9 @@
 package biblioteca;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+
 public class Cdrom {
 	private int codCdrom;
 	private String signatura;
@@ -82,6 +86,30 @@ public class Cdrom {
 		}
 		return false;
 	}
-	
+
+	public void pedirCdrom(boolean modificar){	//Si se llama desde modificar material no pedira codigo
+		BufferedReader teclado=new BufferedReader(new InputStreamReader(System.in));
+
+		try{
+			if(!modificar){
+				System.out.println("Introduce Código del CD-ROM:");
+				this.codCdrom = Integer.parseInt(teclado.readLine());
+			}
+			System.out.println("Introduce Signatura:");
+			this.signatura = teclado.readLine();
+			System.out.println("Introduce Autor:");
+			this.autor = teclado.readLine();
+			System.out.println("Introduce Título:");
+			this.titulo = teclado.readLine();
+			System.out.println("Introduce Materia:");
+			this.materia = teclado.readLine();
+			System.out.println("Introduce Editorial:");
+			this.editorial = teclado.readLine();
+		}catch(IOException e){
+			System.out.println("Error al introducir datos.");
+		}catch(NumberFormatException e){
+			System.out.println("El código debe de ser un número.");
+		}
+	}
 	
 }

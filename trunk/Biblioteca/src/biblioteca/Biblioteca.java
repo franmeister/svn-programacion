@@ -38,52 +38,6 @@ public class Biblioteca {
 	}
 	
 	
-	private Libro crearLibro(){
-		String isbn = PedirDatos.leerCadena("Introduce ISBN:");
-		String signatura = PedirDatos.leerCadena("Introduce Signatura:");
-		String autor = PedirDatos.leerCadena("Introduce Autor:");
-		String titulo = PedirDatos.leerCadena("Introduce Título:");
-		String materia = PedirDatos.leerCadena("Introduce Materia:");
-		String editorial = PedirDatos.leerCadena("Introduce Editorial:");
-		return new Libro(isbn.replace("::"," "), signatura.replace("::"," "), titulo.replace("::"," "),
-				autor.replace("::"," "), materia.replace("::"," "), editorial.replace("::"," "));
-	}
-	
-	private Articulo crearArticulo(){
-		int cod = PedirDatos.leerEntero("Introduce Código del Artículo:");
-		String autor = PedirDatos.leerCadena("Introduce Autor:");
-		String titulo = PedirDatos.leerCadena("Introduce Título:");
-		int numPaginas = PedirDatos.leerEntero("Introduce número de páginas:");
-		return new Articulo(cod, titulo.replace("::"," "), autor.replace("::"," "), numPaginas);
-	}
-	
-	private Cdrom crearCdrom(){
-		int cod = PedirDatos.leerEntero("Introduce Código del CD-ROM:");
-		String signatura = PedirDatos.leerCadena("Introduce Signatura:");
-		String autor = PedirDatos.leerCadena("Introduce Autor:");
-		String titulo = PedirDatos.leerCadena("Introduce Título:");
-		String materia = PedirDatos.leerCadena("Introduce Materia:");
-		String editorial = PedirDatos.leerCadena("Introduce Editorial:");
-		return new Cdrom(cod, signatura.replace("::"," "), titulo.replace("::"," "), autor.replace("::"," "),
-				materia.replace("::"," "), editorial.replace("::"," "));
-	}
-
-	private Revista crearRevista(){
-		int cod = PedirDatos.leerEntero("Introduce Código de la Revista:");
-		String signatura = PedirDatos.leerCadena("Introduce Signatura:");
-		String materia = PedirDatos.leerCadena("Introduce Materia:");
-		String nombre = PedirDatos.leerCadena("Introduce Nombre:");
-		return new Revista(cod, signatura.replace("::"," "), nombre.replace("::"," "), materia.replace("::"," "));
-	}
-	
-	private Usuario crearUsuario(){
-		int cod = PedirDatos.leerEntero("Introduce Código del Usuario:");
-		String nombre = PedirDatos.leerCadena("Introduce Nombre:");
-		String apellido1 = PedirDatos.leerCadena("Introduce Primer Apellido:");
-		String apellido2 = PedirDatos.leerCadena("Introduce Segundo Apellido:");
-		return new Usuario(cod, nombre.replace("::"," "), apellido1.replace("::"," "), apellido2.replace("::"," "));
-	}
-
 	private String componerRegistroLibro(Libro l){
 		String registro="";
 		
@@ -137,12 +91,46 @@ public class Biblioteca {
 		return registro;
 	}
 	
-	private void nuevoMaterial(String material){
-		String[] registro=new String[5];
+	public Libro descomponerRegistroLibro(String linea){
+		String[] registro=new String[6];
 
+		registro=linea.split("::");
+		return new Libro(registro[0], registro[1], registro[2], registro[3], registro[4], registro[5]);
+	}
+	
+	public Articulo descomponerRegistroArticulo(String linea){
+		String[] registro=new String[4];
+
+		registro=linea.split("::");
+		return new Articulo(Integer.parseInt(registro[0]), registro[1], registro[2], Integer.parseInt(registro[3]));
+	}
+	
+	public Cdrom descomponerRegistroCdrom(String linea){
+		String[] registro=new String[6];
+
+		registro=linea.split("::");
+		return new Cdrom(Integer.parseInt(registro[0]), registro[1], registro[2], registro[3], registro[4], registro[5]);
+	}
+	
+	public Revista descomponerRegistroRevista(String linea){
+		String[] registro=new String[4];
+
+		registro=linea.split("::");
+		return new Revista(Integer.parseInt(registro[0]), registro[1], registro[2], registro[3]);
+	}
+	
+	public Usuario descomponerRegistroUsuario(String linea){
+		String[] registro=new String[4];
+
+		registro=linea.split("::");
+		return new Usuario(Integer.parseInt(registro[0]), registro[1], registro[2], registro[3]);
+	}
+
+	private void nuevoMaterial(String material){
 		switch (material) {
 		case "Libro":
-			Libro l=this.crearLibro();
+			Libro l=new Libro();
+			l.pedirLibro(false);
 			
 			try{
 				flectura=new BufferedReader(new FileReader(libros));
@@ -150,8 +138,7 @@ public class Biblioteca {
 				
 				String linea=flectura.readLine();
 				while(linea!=null){
-					registro=linea.split("::");
-					Libro l2=new Libro(registro[0], registro[1], registro[2], registro[3], registro[4], registro[5]);
+					Libro l2=descomponerRegistroLibro(linea);
 					if(l2.getIsbn().toLowerCase().equals(l.getIsbn().toLowerCase())){
 						System.out.println("Error. El ISBN introducido está repetido");
 						fescritura.close();
@@ -176,7 +163,8 @@ public class Biblioteca {
 			}
 			break;
 		case "Articulo":
-			Articulo a=this.crearArticulo();
+			Articulo a=new Articulo();
+			a.pedirArticulo(false);
 			
 			try{
 				flectura=new BufferedReader(new FileReader(articulos));
@@ -184,8 +172,7 @@ public class Biblioteca {
 				
 				String linea=flectura.readLine();
 				while(linea!=null){
-					registro=linea.split("::");	//no funciona
-					Articulo a2=new Articulo(Integer.parseInt(registro[0]), registro[1], registro[2], Integer.parseInt(registro[3]));
+					Articulo a2=descomponerRegistroArticulo(linea);
 					if(a2.getCodArticulo()==a.getCodArticulo()){
 						System.out.println("Error. El código introducido está repetido");
 						fescritura.close();
@@ -210,7 +197,8 @@ public class Biblioteca {
 			}
 			break;
 		case "CD-ROM":
-			Cdrom c=this.crearCdrom();
+			Cdrom c=new Cdrom();
+			c.pedirCdrom(false);
 			
 			try{
 				flectura=new BufferedReader(new FileReader(cdroms));
@@ -218,9 +206,14 @@ public class Biblioteca {
 				
 				String linea=flectura.readLine();
 				while(linea!=null){
-					fescritura.write(linea);
-					fescritura.newLine();
-					linea=flectura.readLine();
+					Cdrom c2=descomponerRegistroCdrom(linea);
+					if(c2.getCodCdrom()==c.getCodCdrom()){
+						System.out.println("Error. El código introducido está repetido");
+						fescritura.close();
+						flectura.close();
+						librostmp.delete();
+						return;
+					}
 				}
 
 				fescritura.write(componerRegistroCdrom(c));
@@ -235,7 +228,8 @@ public class Biblioteca {
 			}
 			break;
 		case "Revista":
-			Revista r=this.crearRevista();
+			Revista r=new Revista();
+			r.pedirRevista(false);
 			
 			try{
 				flectura=new BufferedReader(new FileReader(revistas));
@@ -243,9 +237,14 @@ public class Biblioteca {
 				
 				String linea=flectura.readLine();
 				while(linea!=null){
-					fescritura.write(linea);
-					fescritura.newLine();
-					linea=flectura.readLine();
+					Revista r2=descomponerRegistroRevista(linea);
+					if(r2.getCodRevista()==r.getCodRevista()){
+						System.out.println("Error. El código introducido está repetido");
+						fescritura.close();
+						flectura.close();
+						librostmp.delete();
+						return;
+					}
 				}
 
 				fescritura.write(componerRegistroRevista(r));
@@ -260,7 +259,8 @@ public class Biblioteca {
 			}
 			break;
 		case "Usuario":
-			Usuario u=this.crearUsuario();
+			Usuario u=new Usuario();
+			u.pedirUsuario(false);
 			
 			try{
 				flectura=new BufferedReader(new FileReader(usuarios));
@@ -268,9 +268,14 @@ public class Biblioteca {
 				
 				String linea=flectura.readLine();
 				while(linea!=null){
-					fescritura.write(linea);
-					fescritura.newLine();
-					linea=flectura.readLine();
+					Usuario u2=descomponerRegistroUsuario(linea);
+					if(u2.getCodUsuario()==u.getCodUsuario()){
+						System.out.println("Error. El código introducido está repetido");
+						fescritura.close();
+						flectura.close();
+						librostmp.delete();
+						return;
+					}
 				}
 
 				fescritura.write(componerRegistroUsuario(u));
@@ -290,7 +295,6 @@ public class Biblioteca {
 	}
 	
 	private void modificarMaterial(String material){
-		String[] registro=new String[5];
 		int codigo;
 		boolean mod=false;
 		
@@ -304,10 +308,9 @@ public class Biblioteca {
 				
 				String linea=flectura.readLine();
 				while(linea!=null){
-					registro=linea.split("::");
-					Libro l=new Libro(registro[0], registro[1], registro[2], registro[3], registro[4], registro[5]);
+					Libro l=descomponerRegistroLibro(linea);
 					if(l.getIsbn().toLowerCase().equals(isbn.toLowerCase())){
-						l=crearLibro();
+						l.pedirLibro(true);
 						fescritura.write(componerRegistroLibro(l));
 						fescritura.newLine();
 						linea=flectura.readLine();
@@ -339,10 +342,9 @@ public class Biblioteca {
 				
 				String linea=flectura.readLine();
 				while(linea!=null){
-					registro=linea.split("::");
-					Articulo a=new Articulo(Integer.parseInt(registro[0]), registro[1], registro[2], Integer.parseInt(registro[3]));
+					Articulo a=descomponerRegistroArticulo(linea);
 					if(a.getCodArticulo()==codigo){
-						a=crearArticulo();
+						a.pedirArticulo(true);
 						fescritura.write(componerRegistroArticulo(a));
 						fescritura.newLine();
 						linea=flectura.readLine();
@@ -374,10 +376,9 @@ public class Biblioteca {
 				
 				String linea=flectura.readLine();
 				while(linea!=null){
-					registro=linea.split("::");
-					Cdrom c=new Cdrom(Integer.parseInt(registro[0]), registro[1], registro[2], registro[3], registro[4], registro[5]);
+					Cdrom c=descomponerRegistroCdrom(linea);
 					if(c.getCodCdrom()==codigo){
-						c=crearCdrom();
+						c.pedirCdrom(true);
 						fescritura.write(componerRegistroCdrom(c));
 						fescritura.newLine();
 						linea=flectura.readLine();
@@ -409,10 +410,9 @@ public class Biblioteca {
 				
 				String linea=flectura.readLine();
 				while(linea!=null){
-					registro=linea.split("::");
-					Revista r=new Revista(Integer.parseInt(registro[0]), registro[1], registro[2], registro[3]);
+					Revista r=descomponerRegistroRevista(linea);
 					if(r.getCodRevista()==codigo){
-						r=crearRevista();
+						r.pedirRevista(true);
 						fescritura.write(componerRegistroRevista(r));
 						fescritura.newLine();
 						linea=flectura.readLine();
@@ -444,10 +444,9 @@ public class Biblioteca {
 				
 				String linea=flectura.readLine();
 				while(linea!=null){
-					registro=linea.split("::");
-					Usuario u=new Usuario(Integer.parseInt(registro[0]), registro[1], registro[2], registro[3]);
+					Usuario u=descomponerRegistroUsuario(linea);
 					if(u.getCodUsuario()==codigo){
-						u=crearUsuario();
+						u.pedirUsuario(true);
 						fescritura.write(componerRegistroUsuario(u));
 						fescritura.newLine();
 						linea=flectura.readLine();
@@ -483,7 +482,6 @@ public class Biblioteca {
 	}
 
 	private void borrarMaterial(String material){
-		String[] registro=new String[5];
 		int codigo;
 		boolean borrado=false;
 		
@@ -497,8 +495,7 @@ public class Biblioteca {
 				
 				String linea=flectura.readLine();
 				while(linea!=null){
-					registro=linea.split("::");
-					Libro l=new Libro(registro[0], registro[1], registro[2], registro[3], registro[4], registro[5]);
+					Libro l=descomponerRegistroLibro(linea);
 					if(l.getIsbn().toLowerCase().equals(isbn.toLowerCase())){
 						linea=flectura.readLine();
 						borrado=true;
@@ -529,8 +526,7 @@ public class Biblioteca {
 				
 				String linea=flectura.readLine();
 				while(linea!=null){
-					registro=linea.split("::");
-					Articulo a=new Articulo(Integer.parseInt(registro[0]), registro[1], registro[2], Integer.parseInt(registro[3]));
+					Articulo a=descomponerRegistroArticulo(linea);
 					if(a.getCodArticulo()==codigo){
 						linea=flectura.readLine();
 						borrado=true;
@@ -561,8 +557,7 @@ public class Biblioteca {
 				
 				String linea=flectura.readLine();
 				while(linea!=null){
-					registro=linea.split("::");
-					Cdrom c=new Cdrom(Integer.parseInt(registro[0]), registro[1], registro[2], registro[3], registro[4], registro[5]);
+					Cdrom c=descomponerRegistroCdrom(linea);
 					if(c.getCodCdrom()==codigo){
 						linea=flectura.readLine();
 						borrado=true;
@@ -593,8 +588,7 @@ public class Biblioteca {
 				
 				String linea=flectura.readLine();
 				while(linea!=null){
-					registro=linea.split("::");
-					Revista r=new Revista(Integer.parseInt(registro[0]), registro[1], registro[2], registro[3]);
+					Revista r=descomponerRegistroRevista(linea);
 					if(r.getCodRevista()==codigo){
 						linea=flectura.readLine();
 						borrado=true;
@@ -625,8 +619,7 @@ public class Biblioteca {
 				
 				String linea=flectura.readLine();
 				while(linea!=null){
-					registro=linea.split("::");
-					Usuario u=new Usuario(Integer.parseInt(registro[0]), registro[1], registro[2], registro[3]);
+					Usuario u=descomponerRegistroUsuario(linea);
 					if(u.getCodUsuario()==codigo){
 						linea=flectura.readLine();
 						borrado=true;
@@ -720,15 +713,13 @@ public class Biblioteca {
 		int codigo;
 		int usuario=PedirDatos.leerEntero("Introduce el código del usuario");
 		boolean existeUsu=false, existeMat=false;
-		String[] registro=new String[6];
 		Prestamo p;
 		
 		try {
 			flectura=new BufferedReader(new FileReader(usuarios));
 			String linea=flectura.readLine();
 			while(linea!=null){
-				registro=linea.split("::");
-				Usuario u=new Usuario(Integer.parseInt(registro[0]), registro[1], registro[2], registro[3]);
+				Usuario u=descomponerRegistroUsuario(linea);
 				if(u.getCodUsuario()==usuario){
 					existeUsu=true;
 					break;
@@ -753,8 +744,7 @@ public class Biblioteca {
 				flectura=new BufferedReader(new FileReader(libros));
 				String linea=flectura.readLine();
 				while(linea!=null){
-					registro=linea.split("::");
-					Libro l=new Libro(registro[0], registro[1], registro[2], registro[3], registro[4], registro[5]);
+					Libro l=descomponerRegistroLibro(linea);
 					if(l.getIsbn().toLowerCase().equals(isbn.toLowerCase())){
 						existeMat=true;
 						break;
@@ -785,8 +775,7 @@ public class Biblioteca {
 				flectura=new BufferedReader(new FileReader(articulos));
 				String linea=flectura.readLine();
 				while(linea!=null){
-					registro=linea.split("::");
-					Articulo a=new Articulo(Integer.parseInt(registro[0]), registro[1], registro[2], Integer.parseInt(registro[3]));
+					Articulo a=descomponerRegistroArticulo(linea);
 					if(a.getCodArticulo()==codigo){
 						existeMat=true;
 						break;
@@ -817,8 +806,7 @@ public class Biblioteca {
 				flectura=new BufferedReader(new FileReader(cdroms));
 				String linea=flectura.readLine();
 				while(linea!=null){
-					registro=linea.split("::");
-					Cdrom c=new Cdrom(Integer.parseInt(registro[0]), registro[1], registro[2], registro[3], registro[4], registro[5]);
+					Cdrom c=descomponerRegistroCdrom(linea);
 					if(c.getCodCdrom()==codigo){
 						existeMat=true;
 						break;
@@ -850,8 +838,7 @@ public class Biblioteca {
 				flectura=new BufferedReader(new FileReader(revistas));
 				String linea=flectura.readLine();
 				while(linea!=null){
-					registro=linea.split("::");
-					Revista r=new Revista(Integer.parseInt(registro[0]), registro[1], registro[2], registro[3]);
+					Revista r=descomponerRegistroRevista(linea);
 					if(r.getCodRevista()==codigo){
 						existeMat=true;
 						break;
