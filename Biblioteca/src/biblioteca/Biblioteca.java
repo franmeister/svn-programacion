@@ -28,13 +28,13 @@ public class Biblioteca {
 		
 		articulos=new File(ruta,"articulos.txt");
 		libros=new File(ruta,"libros.txt");
-		cdroms=new File(ruta,"cdroms.txt");
+		cdroms=new File(ruta,"cd-roms.txt");
 		revistas=new File(ruta,"revistas.txt");
 		usuarios=new File(ruta,"usuarios.txt");
 		prestamos=new File(ruta,"prestamos.txt");
 		articulostmp=new File(ruta,"articulos.txt.tmp");
 		librostmp=new File(ruta,"libros.txt.tmp");
-		cdromstmp=new File(ruta,"cdroms.txt.tmp");
+		cdromstmp=new File(ruta,"cd-roms.txt.tmp");
 		revistastmp=new File(ruta,"revistas.txt.tmp");
 		usuariostmp=new File(ruta,"usuarios.txt.tmp");
 		prestamostmp=new File(ruta,"prestamos.txt.tmp");
@@ -724,6 +724,7 @@ public class Biblioteca {
 				isbn = teclado.readLine();
 			} catch (IOException e1) {
 				System.out.println("Error al introducir datos");
+				return;
 			}
 			
 			try {
@@ -751,8 +752,10 @@ public class Biblioteca {
 				codigo=Integer.parseInt(teclado.readLine());
 			} catch (NumberFormatException e) {
 				System.out.println("Error, inserte un número entero.");
+				return;
 			} catch (IOException e) {
 				System.out.println("Error al leer datos.");
+				return;
 			}
 			
 			try {
@@ -780,8 +783,10 @@ public class Biblioteca {
 				codigo=Integer.parseInt(teclado.readLine());
 			} catch (NumberFormatException e) {
 				System.out.println("Error, inserte un número entero.");
+				return;
 			} catch (IOException e) {
 				System.out.println("Error al leer datos.");
+				return;
 			}
 			
 			try {
@@ -809,8 +814,10 @@ public class Biblioteca {
 				codigo=Integer.parseInt(teclado.readLine());
 			} catch (NumberFormatException e) {
 				System.out.println("Error, inserte un número entero.");
+				return;
 			} catch (IOException e) {
 				System.out.println("Error al leer datos.");
+				return;
 			}
 			
 			try {
@@ -839,8 +846,10 @@ public class Biblioteca {
 				codigo=Integer.parseInt(teclado.readLine());
 			} catch (NumberFormatException e) {
 				System.out.println("Error, inserte un número entero.");
+				return;
 			} catch (IOException e) {
 				System.out.println("Error al leer datos.");
+				return;
 			}
 			try {
 				flectura=new BufferedReader(new FileReader(usuarios));
