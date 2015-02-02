@@ -337,7 +337,6 @@ public class Biblioteca {
 				
 				libros.delete();
 				librostmp.renameTo(libros);
-				flectura.close();
 			} catch (IOException e) {
 				System.out.println("Error al manejar ficheros.");
 			}
@@ -378,7 +377,6 @@ public class Biblioteca {
 				
 				articulos.delete();
 				articulostmp.renameTo(articulos);
-				flectura.close();
 			} catch (IOException e) {
 				System.out.println("Error al manejar ficheros.");
 			}
@@ -419,7 +417,6 @@ public class Biblioteca {
 				
 				cdroms.delete();
 				cdromstmp.renameTo(cdroms);
-				flectura.close();
 			} catch (IOException e) {
 				System.out.println("Error al manejar ficheros.");
 			}
@@ -460,7 +457,6 @@ public class Biblioteca {
 				
 				revistas.delete();
 				revistastmp.renameTo(revistas);
-				flectura.close();
 			} catch (IOException e) {
 				System.out.println("Error al manejar ficheros.");
 			}
@@ -501,7 +497,6 @@ public class Biblioteca {
 				
 				usuarios.delete();
 				usuariostmp.renameTo(usuarios);
-				flectura.close();
 			} catch (IOException e) {
 				System.out.println("Error al manejar ficheros.");
 			}
@@ -555,7 +550,6 @@ public class Biblioteca {
 				
 				libros.delete();
 				librostmp.renameTo(libros);
-				flectura.close();
 			} catch (IOException e) {
 				System.out.println("Error al manejar ficheros.");
 			}
@@ -593,7 +587,6 @@ public class Biblioteca {
 				
 				articulos.delete();
 				articulostmp.renameTo(articulos);
-				flectura.close();
 			} catch (IOException e) {
 				System.out.println("Error al manejar ficheros.");
 			}
@@ -631,7 +624,6 @@ public class Biblioteca {
 				
 				cdroms.delete();
 				cdromstmp.renameTo(cdroms);
-				flectura.close();
 			} catch (IOException e) {
 				System.out.println("Error al manejar ficheros.");
 			}
@@ -669,7 +661,6 @@ public class Biblioteca {
 				
 				revistas.delete();
 				revistastmp.renameTo(revistas);
-				flectura.close();
 			} catch (IOException e) {
 				System.out.println("Error al manejar ficheros.");
 			}
@@ -706,7 +697,6 @@ public class Biblioteca {
 				
 				usuarios.delete();
 				usuariostmp.renameTo(usuarios);
-				flectura.close();
 			} catch (IOException e) {
 				System.out.println("Error al manejar ficheros.");
 			}
@@ -1149,6 +1139,99 @@ public class Biblioteca {
 		
 	}
 	
+	private void listarMaterial(String material){
+		String linea;
+		
+		switch (material) {
+		case "Libro":
+			try{
+				flectura=new BufferedReader(new FileReader(libros));
+					
+				linea=flectura.readLine();
+				while(linea!=null){
+					Libro l=descomponerRegistroLibro(linea);
+					System.out.println(l.toString());
+					System.out.println();
+					linea=flectura.readLine();
+				}
+	
+				flectura.close();
+			} catch (IOException e) {
+				System.out.println("Error al manejar ficheros.");
+			}
+			break;
+		case "Articulo":
+			try {
+				flectura=new BufferedReader(new FileReader(articulos));
+				
+				linea=flectura.readLine();
+				while(linea!=null){
+					Articulo a=descomponerRegistroArticulo(linea);
+					System.out.println(a.toString());
+					System.out.println();
+					linea=flectura.readLine();
+				}
+
+				flectura.close();
+			} catch (IOException e) {
+				System.out.println("Error al manejar ficheros.");
+			}
+			break;		
+		case "CD-ROM":
+			try {
+				flectura=new BufferedReader(new FileReader(cdroms));
+				
+				linea=flectura.readLine();
+				while(linea!=null){
+					Cdrom c=descomponerRegistroCdrom(linea);
+					System.out.println(c.toString());
+					linea=flectura.readLine();
+				}
+				
+				flectura.close();
+			} catch (IOException e) {
+				System.out.println("Error al manejar ficheros.");
+			}
+			break;				
+		case "Revista":
+			try {
+				flectura=new BufferedReader(new FileReader(revistas));
+				
+				linea=flectura.readLine();
+				while(linea!=null){
+					Revista r=descomponerRegistroRevista(linea);
+					System.out.println(r.toString());
+					System.out.println();
+					linea=flectura.readLine();
+				}
+				
+				flectura.close();
+			} catch (IOException e) {
+				System.out.println("Error al manejar ficheros.");
+			}
+			break;
+		case "Usuario":
+			try {
+				flectura=new BufferedReader(new FileReader(usuarios));
+				
+				linea=flectura.readLine();
+				while(linea!=null){
+					Usuario u=descomponerRegistroUsuario(linea);
+					System.out.println(u.toString());
+					System.out.println();
+					linea=flectura.readLine();
+				}
+
+				flectura.close();
+			} catch (IOException e) {
+				System.out.println("Error al manejar ficheros.");
+			}
+			break;
+		default:
+			break;	
+		}
+	}
+	
 	private void menuMaterial(String material){
 		int opcion=-1;
 		do{
@@ -1156,6 +1239,7 @@ public class Biblioteca {
 			System.out.println("1.Nuevo "+material);
 			System.out.println("2.Modificar "+material);
 			System.out.println("3.Borrar "+material);
+			System.out.println("4.Listar "+material+"s");
 			System.out.println("0.Volver al menú principal");
 			System.out.println("Elija una opcion:");
 			
@@ -1178,6 +1262,9 @@ public class Biblioteca {
 				break;
 			case 3:
 				this.borrarMaterial(material);
+				break;
+			case 4:
+				this.listarMaterial(material);
 				break;
 			default:
 				System.out.println("Debe selecionar una opción correcta. Vuelva a intentarlo.");
