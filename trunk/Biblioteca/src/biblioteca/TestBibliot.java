@@ -8,6 +8,7 @@ public class TestBibliot {
 		//Biblioteca b = new Biblioteca("C:\\Users\\usuario\\Documents\\cursos\\DAW\\PRO\\svn-programacion\\Biblioteca\\src\\Biblioteca\\ficheros");
 
 		b.menu();
+		
 	}
 
 }

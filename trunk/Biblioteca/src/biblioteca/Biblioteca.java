@@ -6,6 +6,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.Calendar;
 
 public class Biblioteca {
@@ -14,6 +15,8 @@ public class Biblioteca {
 	private BufferedWriter fescritura;
 	private File articulos, libros, cdroms, revistas, usuarios, prestamos, directorioPadre;
 	private File articulostmp, librostmp, cdromstmp, revistastmp, usuariostmp, prestamostmp;
+	private BufferedReader teclado=new BufferedReader(new InputStreamReader(System.in));
+
 
 	public Biblioteca(String ruta){
 		directorioPadre=new File(ruta);
@@ -92,7 +95,7 @@ public class Biblioteca {
 	}
 	
 	public Libro descomponerRegistroLibro(String linea){
-		String[] registro=new String[6];
+		String[] registro=new String[5];
 
 		registro=linea.split("::");
 		return new Libro(registro[0], registro[1], registro[2], registro[3], registro[4], registro[5]);
@@ -295,12 +298,18 @@ public class Biblioteca {
 	}
 	
 	private void modificarMaterial(String material){
-		int codigo;
+		int codigo=0;
+		String isbn="";
 		boolean mod=false;
 		
 		switch (material) {
 		case "Libro":
-			String isbn=PedirDatos.leerCadena("Introduce el ISBN del libro a modificar: ");
+			System.out.println("Introduce el ISBN del libro a modificar: ");
+			try {
+				isbn = teclado.readLine();
+			} catch (IOException e1) {
+				System.out.println("Error al introducir datos");
+			}
 			
 			try {
 				flectura=new BufferedReader(new FileReader(libros));
@@ -334,7 +343,14 @@ public class Biblioteca {
 			}
 			break;
 		case "Articulo":
-			codigo=PedirDatos.leerEntero("Introduce el código del artículo a modificar: ");
+			System.out.println("Introduce el código del artículo a modificar: ");
+			try {
+				codigo=Integer.parseInt(teclado.readLine());
+			} catch (NumberFormatException e) {
+				System.out.println("Error, inserte un número entero.");
+			} catch (IOException e) {
+				System.out.println("Error al leer datos.");
+			}
 			
 			try {
 				flectura=new BufferedReader(new FileReader(articulos));
@@ -368,7 +384,14 @@ public class Biblioteca {
 			}
 			break;		
 		case "CD-ROM":
-			codigo=PedirDatos.leerEntero("Introduce el código del CD-ROM a modificar: ");
+			System.out.println("Introduce el código del CD-ROM a modificar: ");
+			try {
+				codigo=Integer.parseInt(teclado.readLine());
+			} catch (NumberFormatException e) {
+				System.out.println("Error, inserte un número entero.");
+			} catch (IOException e) {
+				System.out.println("Error al leer datos.");
+			}
 			
 			try {
 				flectura=new BufferedReader(new FileReader(cdroms));
@@ -402,7 +425,14 @@ public class Biblioteca {
 			}
 			break;				
 		case "Revista":
-			codigo=PedirDatos.leerEntero("Introduce el código de la Revista a modificar: ");
+			System.out.println("Introduce el código de la revista a modificar: ");
+			try {
+				codigo=Integer.parseInt(teclado.readLine());
+			} catch (NumberFormatException e) {
+				System.out.println("Error, inserte un número entero.");
+			} catch (IOException e) {
+				System.out.println("Error al leer datos.");
+			}
 			
 			try {
 				flectura=new BufferedReader(new FileReader(revistas));
@@ -436,7 +466,14 @@ public class Biblioteca {
 			}
 			break;
 		case "Usuario":
-			codigo=PedirDatos.leerEntero("Introduce el código del Usuario a modificar: ");
+			System.out.println("Introduce el código del usuario a modificar: ");
+			try {
+				codigo=Integer.parseInt(teclado.readLine());
+			} catch (NumberFormatException e) {
+				System.out.println("Error, inserte un número entero.");
+			} catch (IOException e) {
+				System.out.println("Error al leer datos.");
+			}
 			
 			try {
 				flectura=new BufferedReader(new FileReader(usuarios));
@@ -482,12 +519,18 @@ public class Biblioteca {
 	}
 
 	private void borrarMaterial(String material){
-		int codigo;
+		int codigo=0;
+		String isbn="";
 		boolean borrado=false;
 		
 		switch (material) {
 		case "Libro":
-			String isbn=PedirDatos.leerCadena("Introduce el ISBN del libro a modificar: ");
+			System.out.println("Introduce el ISBN del libro a borrar: ");
+			try {
+				isbn = teclado.readLine();
+			} catch (IOException e1) {
+				System.out.println("Error al introducir datos");
+			}
 			
 			try {
 				flectura=new BufferedReader(new FileReader(libros));
@@ -518,7 +561,14 @@ public class Biblioteca {
 			}
 			break;
 		case "Articulo":
-			codigo=PedirDatos.leerEntero("Introduce el código del artículo a modificar: ");
+			System.out.println("Introduce el código del artículo a borrar: ");
+			try {
+				codigo=Integer.parseInt(teclado.readLine());
+			} catch (NumberFormatException e) {
+				System.out.println("Error, inserte un número entero.");
+			} catch (IOException e) {
+				System.out.println("Error al leer datos.");
+			}
 			
 			try {
 				flectura=new BufferedReader(new FileReader(articulos));
@@ -549,7 +599,14 @@ public class Biblioteca {
 			}
 			break;		
 		case "CD-ROM":
-			codigo=PedirDatos.leerEntero("Introduce el código del CD-ROM a modificar: ");
+			System.out.println("Introduce el código del CD-ROM a borrar: ");
+			try {
+				codigo=Integer.parseInt(teclado.readLine());
+			} catch (NumberFormatException e) {
+				System.out.println("Error, inserte un número entero.");
+			} catch (IOException e) {
+				System.out.println("Error al leer datos.");
+			}
 			
 			try {
 				flectura=new BufferedReader(new FileReader(cdroms));
@@ -580,7 +637,14 @@ public class Biblioteca {
 			}
 			break;				
 		case "Revista":
-			codigo=PedirDatos.leerEntero("Introduce el código de la Revista a modificar: ");
+			System.out.println("Introduce el código del revista a borrar: ");
+			try {
+				codigo=Integer.parseInt(teclado.readLine());
+			} catch (NumberFormatException e) {
+				System.out.println("Error, inserte un número entero.");
+			} catch (IOException e) {
+				System.out.println("Error al leer datos.");
+			}
 			
 			try {
 				flectura=new BufferedReader(new FileReader(revistas));
@@ -611,8 +675,14 @@ public class Biblioteca {
 			}
 			break;
 		case "Usuario":
-			codigo=PedirDatos.leerEntero("Introduce el código del Usuario a modificar: ");
-			
+			System.out.println("Introduce el código del usuario a borrar: ");
+			try {
+				codigo=Integer.parseInt(teclado.readLine());
+			} catch (NumberFormatException e) {
+				System.out.println("Error, inserte un número entero.");
+			} catch (IOException e) {
+				System.out.println("Error al leer datos.");
+			}
 			try {
 				flectura=new BufferedReader(new FileReader(usuarios));
 				fescritura=new BufferedWriter(new FileWriter(usuariostmp));
@@ -710,8 +780,17 @@ public class Biblioteca {
 	}
 	
 	private void prestarMaterial(String material){
-		int codigo;
-		int usuario=PedirDatos.leerEntero("Introduce el código del usuario");
+		int codigo=0;
+		int usuario=0;
+		
+		System.out.println("Introduce el código del usuario:: ");
+		try {
+			usuario=Integer.parseInt(teclado.readLine());
+		} catch (NumberFormatException e) {
+			System.out.println("Error, inserte un número entero.");
+		} catch (IOException e) {
+			System.out.println("Error al leer datos.");
+		}
 		boolean existeUsu=false, existeMat=false;
 		Prestamo p;
 		
@@ -738,7 +817,14 @@ public class Biblioteca {
 		
 		switch (material) {
 		case "Libro":
-			String isbn=PedirDatos.leerCadena("Introduce el ISBN del libro a prestar: ");
+			String isbn="";
+			System.out.println("Introduce el ISBN del libro a prestar: ");
+			try {
+				isbn = teclado.readLine();
+			} catch (IOException e1) {
+				System.out.println("Error al introducir datos");
+			}
+			
 			
 			try {
 				flectura=new BufferedReader(new FileReader(libros));
@@ -769,7 +855,14 @@ public class Biblioteca {
 			registrarPrestamo(p);
 			break;
 		case "Articulo":
-			codigo=PedirDatos.leerEntero("Introduce el código del Artículo a prestar: ");
+			System.out.println("Introduce el código del Artículo a prestar: ");
+			try {
+				codigo=Integer.parseInt(teclado.readLine());
+			} catch (NumberFormatException e) {
+				System.out.println("Error, inserte un número entero.");
+			} catch (IOException e) {
+				System.out.println("Error al leer datos.");
+			}
 			
 			try {
 				flectura=new BufferedReader(new FileReader(articulos));
@@ -800,8 +893,14 @@ public class Biblioteca {
 			registrarPrestamo(p);
 			break;
 		case "CD-ROM":
-			codigo=PedirDatos.leerEntero("Introduce el código del CD-ROM a prestar: ");
-			
+			System.out.println("Introduce el código del CD-ROM a prestar: ");
+			try {
+				codigo=Integer.parseInt(teclado.readLine());
+			} catch (NumberFormatException e) {
+				System.out.println("Error, inserte un número entero.");
+			} catch (IOException e) {
+				System.out.println("Error al leer datos.");
+			}			
 			try {
 				flectura=new BufferedReader(new FileReader(cdroms));
 				String linea=flectura.readLine();
@@ -832,8 +931,14 @@ public class Biblioteca {
 			registrarPrestamo(p);
 			break;
 		case "Revista":
-			codigo=PedirDatos.leerEntero("Introduce el código de la Revista a prestar: ");
-			
+			System.out.println("Introduce el código de la Revista a prestar: ");
+			try {
+				codigo=Integer.parseInt(teclado.readLine());
+			} catch (NumberFormatException e) {
+				System.out.println("Error, inserte un número entero.");
+			} catch (IOException e) {
+				System.out.println("Error al leer datos.");
+			}			
 			try {
 				flectura=new BufferedReader(new FileReader(revistas));
 				String linea=flectura.readLine();
@@ -870,13 +975,18 @@ public class Biblioteca {
 
 	
 	private void devolverMaterial(String material){
-		int codigo;
+		int codigo=0;
 		String[] registro=new String[6];
 		Prestamo p;
-		String linea;
+		String linea, isbn="";
 		
 		if(material.equals("Libro")){
-			String isbn=PedirDatos.leerCadena("Introduce el ISBN del libro a devolver: ");
+			System.out.println("Introduce el ISBN del libro a devolver: ");
+			try {
+				isbn = teclado.readLine();
+			} catch (IOException e1) {
+				System.out.println("Error al introducir datos");
+			}
 
 			try {
 				flectura=new BufferedReader(new FileReader(prestamos));
@@ -912,7 +1022,14 @@ public class Biblioteca {
 			
 			return;
 		}
-		codigo = PedirDatos.leerEntero("Introduce el código del "+material+"  a prestar: ");
+		System.out.println("Introduce el código del "+material+" a devolver: ");
+		try {
+			codigo=Integer.parseInt(teclado.readLine());
+		} catch (NumberFormatException e) {
+			System.out.println("Error, inserte un número entero.");
+		} catch (IOException e) {
+			System.out.println("Error al leer datos.");
+		}
 
 		try {
 			flectura = new BufferedReader(new FileReader(prestamos));
@@ -950,7 +1067,7 @@ public class Biblioteca {
 	}
 		
 	private void realizarPrestamo(){
-		int op=-1;
+		int opcion=-1;
 		do{
 			System.out.println("\n");
 			System.out.println("1.Libro");
@@ -958,9 +1075,17 @@ public class Biblioteca {
 			System.out.println("3.Artículo");
 			System.out.println("4.CD-ROM");
 			System.out.println("0.Volver al menú principal");
-			op=PedirDatos.leerEntero("Introduce material a prestar");
+			System.out.println("Introduce material a prestar");
 			
-			switch (op) {
+			try {
+				opcion=Integer.parseInt(teclado.readLine());
+			} catch (NumberFormatException e) {
+				System.out.println("Error, inserte un número entero.");
+			} catch (IOException e) {
+				System.out.println("Error al leer datos.");
+			}
+			
+			switch (opcion) {
 			case 0:
 				break;
 			case 1:
@@ -979,12 +1104,12 @@ public class Biblioteca {
 				System.out.println("Debe selecionar una opción correcta. Vuelva a intentarlo.");
 				break;
 			}
-		}while(op!=0);
+		}while(opcion!=0);
 		
 	}
 	
 	private void devolverPrestamo(){
-		int op=-1;
+		int opcion=-1;
 		do{
 			System.out.println("\n");
 			System.out.println("1.Libro");
@@ -992,9 +1117,16 @@ public class Biblioteca {
 			System.out.println("3.Artículo");
 			System.out.println("4.CD-ROM");
 			System.out.println("0.Volver al menú principal");
-			op=PedirDatos.leerEntero("Introduce material a devolver");
+			System.out.println("Introduce material a devolver");
 			
-			switch (op) {
+			try {
+				opcion=Integer.parseInt(teclado.readLine());
+			} catch (NumberFormatException e) {
+				System.out.println("Error, inserte un número entero.");
+			} catch (IOException e) {
+				System.out.println("Error al leer datos.");
+			}
+			switch (opcion) {
 			case 0:
 				break;
 			case 1:
@@ -1013,7 +1145,7 @@ public class Biblioteca {
 				System.out.println("Debe selecionar una opción correcta. Vuelva a intentarlo.");
 				break;
 			}
-		}while(op!=0);
+		}while(opcion!=0);
 		
 	}
 	
@@ -1025,8 +1157,15 @@ public class Biblioteca {
 			System.out.println("2.Modificar "+material);
 			System.out.println("3.Borrar "+material);
 			System.out.println("0.Volver al menú principal");
+			System.out.println("Elija una opcion:");
 			
-			opcion=PedirDatos.leerEntero("Elija una opcion:");
+			try {
+				opcion=Integer.parseInt(teclado.readLine());
+			} catch (NumberFormatException e) {
+				System.out.println("Error, inserte un número entero.");
+			} catch (IOException e) {
+				System.out.println("Error al leer datos.");
+			}
 			
 			switch (opcion) {
 			case 0:
@@ -1059,8 +1198,15 @@ public class Biblioteca {
 			System.out.println("6.Realizar Préstamo");
 			System.out.println("7.Devolver Préstamo");
 			System.out.println("0.Salir");
+			System.out.println("Elija una opcion:");
 			
-			opcion=PedirDatos.leerEntero("Elija una opcion:");
+			try {
+				opcion=Integer.parseInt(teclado.readLine());
+			} catch (NumberFormatException e) {
+				System.out.println("Error, inserte un número entero.");
+			} catch (IOException e) {
+				System.out.println("Error al leer datos.");
+			}
 	
 			switch (opcion) {
 			case 0:
