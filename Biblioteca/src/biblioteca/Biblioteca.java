@@ -713,6 +713,161 @@ public class Biblioteca {
 
 	}
 	
+	private void buscarMaterial(String material){
+		int codigo=0;
+		String isbn="";
+		
+		switch (material) {
+		case "Libro":
+			System.out.println("Introduce el ISBN del libro a buscar: ");
+			try {
+				isbn = teclado.readLine();
+			} catch (IOException e1) {
+				System.out.println("Error al introducir datos");
+			}
+			
+			try {
+				flectura=new BufferedReader(new FileReader(libros));
+				
+				String linea=flectura.readLine();
+				while(linea!=null){
+					Libro l=descomponerRegistroLibro(linea);
+					if(l.getIsbn().toLowerCase().equals(isbn.toLowerCase())){
+						System.out.println(l.toString());
+						flectura.close();
+						return;
+					}
+					linea=flectura.readLine();
+				}
+				System.out.println("No existe el libro con ISBN "+isbn);
+				flectura.close();
+			} catch (IOException e) {
+				System.out.println("Error al manejar ficheros.");
+			}
+			break;
+		case "Articulo":
+			System.out.println("Introduce el código del artículo a buscar: ");
+			try {
+				codigo=Integer.parseInt(teclado.readLine());
+			} catch (NumberFormatException e) {
+				System.out.println("Error, inserte un número entero.");
+			} catch (IOException e) {
+				System.out.println("Error al leer datos.");
+			}
+			
+			try {
+				flectura=new BufferedReader(new FileReader(articulos));
+				
+				String linea=flectura.readLine();
+				while(linea!=null){
+					Articulo a=descomponerRegistroArticulo(linea);
+					if(a.getCodArticulo()==codigo){
+						System.out.println(a.toString());
+						flectura.close();
+						return;
+					}
+					linea=flectura.readLine();
+				}
+				System.out.println("No existe el artículo con código "+codigo);
+				flectura.close();
+			} catch (IOException e) {
+				System.out.println("Error al manejar ficheros.");
+			}
+			break;		
+		case "CD-ROM":
+			System.out.println("Introduce el código del CD-ROM a buscar: ");
+			try {
+				codigo=Integer.parseInt(teclado.readLine());
+			} catch (NumberFormatException e) {
+				System.out.println("Error, inserte un número entero.");
+			} catch (IOException e) {
+				System.out.println("Error al leer datos.");
+			}
+			
+			try {
+				flectura=new BufferedReader(new FileReader(cdroms));
+				
+				String linea=flectura.readLine();
+				while(linea!=null){
+					Cdrom c=descomponerRegistroCdrom(linea);
+					if(c.getCodCdrom()==codigo){
+						System.out.println(c.toString());
+						flectura.close();
+						return;
+					}
+					linea=flectura.readLine();
+				}
+				flectura.close();
+				System.out.println("No existe el CD-ROM con código "+codigo);
+			} catch (IOException e) {
+				System.out.println("Error al manejar ficheros.");
+			}
+			break;				
+		case "Revista":
+			System.out.println("Introduce el código del revista a borrar: ");
+			try {
+				codigo=Integer.parseInt(teclado.readLine());
+			} catch (NumberFormatException e) {
+				System.out.println("Error, inserte un número entero.");
+			} catch (IOException e) {
+				System.out.println("Error al leer datos.");
+			}
+			
+			try {
+				flectura=new BufferedReader(new FileReader(revistas));
+				
+				String linea=flectura.readLine();
+				while(linea!=null){
+					Revista r=descomponerRegistroRevista(linea);
+					if(r.getCodRevista()==codigo){
+						System.out.println(r.toString());
+						flectura.close();
+						return;
+					}
+					
+					linea=flectura.readLine();
+				}
+				flectura.close();
+				System.out.println("No existe la revista con código "+codigo);
+			} catch (IOException e) {
+				System.out.println("Error al manejar ficheros.");
+			}
+			break;
+		case "Usuario":
+			System.out.println("Introduce el código del usuario a borrar: ");
+			try {
+				codigo=Integer.parseInt(teclado.readLine());
+			} catch (NumberFormatException e) {
+				System.out.println("Error, inserte un número entero.");
+			} catch (IOException e) {
+				System.out.println("Error al leer datos.");
+			}
+			try {
+				flectura=new BufferedReader(new FileReader(usuarios));
+				fescritura=new BufferedWriter(new FileWriter(usuariostmp));
+				
+				String linea=flectura.readLine();
+				while(linea!=null){
+					Usuario u=descomponerRegistroUsuario(linea);
+					if(u.getCodUsuario()==codigo){
+						System.out.println(u.toString());
+						flectura.close();
+						return;
+					}
+					
+					linea=flectura.readLine();
+				}
+				flectura.close();
+				System.out.println("No existe el usuario con código "+codigo);
+			} catch (IOException e) {
+				System.out.println("Error al manejar ficheros.");
+			}
+			break;
+		default:
+			break;	
+		}
+	}
+		
 	private String fechaActual(){
 		 Calendar c = Calendar.getInstance();
 	     return c.getTime()+"";
@@ -1240,6 +1395,7 @@ public class Biblioteca {
 			System.out.println("2.Modificar "+material);
 			System.out.println("3.Borrar "+material);
 			System.out.println("4.Listar "+material+"s");
+			System.out.println("5.Buscar "+material);
 			System.out.println("0.Volver al menú principal");
 			System.out.println("Elija una opcion:");
 			
@@ -1265,6 +1421,9 @@ public class Biblioteca {
 				break;
 			case 4:
 				this.listarMaterial(material);
+				break;
+			case 5:
+				this.buscarMaterial(material);
 				break;
 			default:
 				System.out.println("Debe selecionar una opción correcta. Vuelva a intentarlo.");
