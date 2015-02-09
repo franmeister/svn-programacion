@@ -45,7 +45,7 @@ public class Ejecicio6_2 {
 				rset2.close();
 			}
 			rset.close();
-			stmt.close();
+			stmt.close(); 
 			stmt2.close();
 			con.close();
 		} catch (SQLException e) {
