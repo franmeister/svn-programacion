@@ -3,3 +3,6 @@
 1::12::Revista::Wed Jan 28 14:16:01 CET 2015::Wed Jan 28 15:23:35 CET 2015
 1::12::Revista::Wed Jan 28 14:16:23 CET 2015::Wed Jan 28 14:09:33 CET 2015
 1::12::Libro::Wed Jan 28 14:24:58 CET 2015::Wed Jan 28 15:11:51 CET 2015
+2::10::Libro::Thu Jan 29 08:44:45 CET 2015::Thu Jan 29 08:45:01 CET 2015
+1::10::Revista::Mon Feb 02 09:01:28 CET 2015::Mon Feb 02 09:01:42 CET 2015
+1::100::Libro::Mon Feb 02 09:02:27 CET 2015::Mon Feb 02 09:02:44 CET 2015
