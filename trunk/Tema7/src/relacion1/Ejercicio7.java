@@ -20,6 +20,12 @@ public class Ejercicio7 {
 		System.out.println("3. Modificar empleado");
 		System.out.println("4. Borrar empleado");
 		System.out.println("5. Salir");
+		
+		System.out.println("1. Listar departamentos");
+		System.out.println("2. Añadir departamento");
+		System.out.println("3. Modificar departamento");
+		System.out.println("4. Borrar departamento");
+		System.out.println("5. Salir");
 
 	}
 	
