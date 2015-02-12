@@ -1,0 +1,8 @@
+Crear un programa llamado guardarText que sirva para capturar y escribir en un archivo
+todas las líneas de texto que escriba el usuario en la línea de comandos hasta que escriba
+una vacía, momento en el cual el archivo se cerrará y se leerá escribiendo en la consola su
+contenido sdns nladkfn
+
+hhvh
+hkjbjkç
+jlbkjlb ugyu

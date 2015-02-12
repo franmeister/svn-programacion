@@ -38,14 +38,12 @@ public class Departamento {
 				+ ", loc=" + loc + "]";
 	}
 	
-	public void pedirDepartamento(boolean modificar){
+	public void pedirDepartamento(){
 		BufferedReader teclado=new BufferedReader(new InputStreamReader(System.in));
 
 		try{
-			if(!modificar){
-				System.out.println("Introduce código de departamento: ");
-				this.dept_no = Integer.parseInt(teclado.readLine());
-			}
+			System.out.println("Introduce código de departamento: ");
+			this.dept_no = Integer.parseInt(teclado.readLine());
 			System.out.println("Introduce nombre de departamento:");
 			this.dnombre = teclado.readLine();
 			System.out.println("Introduce localidad:");
