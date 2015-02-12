@@ -9,7 +9,7 @@ public class Empleado {
 	private int emp_no, dir, dept_no;
 	private String apellido, oficio;
 	private double salario, comision, total;
-	private Calendar fecha_alt;
+	private String fecha_alt;
 
 	public int getEmp_no() {
 		return emp_no;
@@ -68,18 +68,14 @@ public class Empleado {
 	}
 
 	public double getTotal() {
-		return total;
+		return this.comision+this.salario;
 	}
 
-	public void setTotal(double total) {
-		this.total = total;
-	}
-
-	public Calendar getFecha_alt() {
+	public String getFecha_alt() {
 		return fecha_alt;
 	}
 
-	public void setFecha_alt(Calendar fecha_alt) {
+	public void setFecha_alt(String fecha_alt) {
 		this.fecha_alt = fecha_alt;
 	}
 
@@ -91,16 +87,18 @@ public class Empleado {
 				+ ", total=" + total + ", fecha_alt=" + fecha_alt + "]";
 	}
 	
-	public void pedirEmpleado(boolean modificar){
+	public void pedirEmpleado(){
 		BufferedReader teclado=new BufferedReader(new InputStreamReader(System.in));
 
 		try{
-			if(!modificar){
-				System.out.println("Introduce código de empleado: ");
-				this.emp_no = Integer.parseInt(teclado.readLine());
-			}
+			System.out.println("Introduce código de empleado: ");
+			this.emp_no = Integer.parseInt(teclado.readLine());
 			System.out.println("Introduce código del jefe si procede: ");
-			this.dir = Integer.parseInt(teclado.readLine());
+			try{
+				this.dir = Integer.parseInt(teclado.readLine());
+			}catch(NumberFormatException ne){
+				this.dir=0;
+			}			
 			System.out.println("Introduce apellido: ");
 			this.apellido = teclado.readLine();
 			System.out.println("Introduce oficio:");
@@ -111,10 +109,8 @@ public class Empleado {
 			this.salario = Double.parseDouble(teclado.readLine());
 			System.out.println("Introduce comision: ");
 			this.comision = Double.parseDouble(teclado.readLine());
-			System.out.println("Introduce total: ");
-			this.total = Double.parseDouble(teclado.readLine());
 			System.out.println("Introduce fecha de alta: ");
-			//leer fecha de alta
+			this.fecha_alt = teclado.readLine();
 		}catch(IOException e){
 			System.out.println("Error al introducir datos.");
 		}catch(NumberFormatException e){

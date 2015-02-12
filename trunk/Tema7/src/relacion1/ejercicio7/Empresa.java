@@ -47,6 +47,7 @@ public class Empresa {
 		boolean seguir=false;
 
 		do{
+			System.out.println();
 			System.out.println("1. Gestionar empleados");
 			System.out.println("2. Gestionar departamentos");
 			System.out.println("3. Imprimir ...");
