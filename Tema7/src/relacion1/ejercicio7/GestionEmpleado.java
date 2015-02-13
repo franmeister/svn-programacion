@@ -50,7 +50,7 @@ public class GestionEmpleado {
 			while (rset.next()){ 
 				System.out.print (rset.getInt("EMP_NO")+"-"); 
 				System.out.print (rset.getString("APELLIDO")+"-");
-				System.out.print (rset.getString("OFICIO")); 
+				System.out.print (rset.getString("OFICIO")+"-"); 
 				System.out.print (rset.getInt("DIR")+"-"); 
 				System.out.print (rset.getString("FECHA_ALT")+"-");
 				System.out.print (rset.getDouble("SALARIO")+"-");

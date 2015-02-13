@@ -50,7 +50,7 @@ public class Empresa {
 			System.out.println();
 			System.out.println("1. Gestionar empleados");
 			System.out.println("2. Gestionar departamentos");
-			System.out.println("3. Imprimir ...");
+			System.out.println("3. Imprimir datos empresa");
 			System.out.println("0. Salir");
 			do{
 				try{
