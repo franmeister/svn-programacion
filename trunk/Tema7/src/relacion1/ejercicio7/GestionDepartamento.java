@@ -77,9 +77,8 @@ public class GestionDepartamento {
 			return;
 		}
 		String sql="delete from depart where dept_no="+cod;
-		Statement stmt;
 		try {
-			stmt = this.con.createStatement();
+			Statement stmt = this.con.createStatement();
 			int res=stmt.executeUpdate(sql);
 			System.out.println("Se han borrado "+res+" departamento/s.");
 			stmt.close();
