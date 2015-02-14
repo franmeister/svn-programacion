@@ -5,7 +5,6 @@ import java.io.InputStreamReader;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
 
@@ -55,15 +54,28 @@ public class Empresa {
 	private void imprimirDatos(Connection con){
 		try{
 			Statement stmt=this.con.createStatement();
+			Statement stmt2=this.con.createStatement();
+
 			String sql="select * from depart";
 			ResultSet rset=stmt.executeQuery(sql);
-			System.out.println(this.addEspacios("Nº Departamento",6)+this.addEspacios("Nombre", 30)+this.addEspacios("Localidad",15));
 			while (rset.next()){
+				System.out.println(this.addEspacios("Nº Departamento",6)+this.addEspacios("Nombre", 30)+this.addEspacios("Localidad",15));
 				Departamento d=new Departamento();
 				d.setDept_no(rset.getInt("DEPT_NO"));
 				d.setDnombre(rset.getString("DNOMBRE")+"-");
 				d.setLoc(rset.getString("LOC"));
 				System.out.println(this.formatoDepart(d));
+				String sql2="select * from emple where dept_no="+rset.getInt("DEPT_NO");
+				ResultSet rset2=stmt2.executeQuery(sql2);
+				while(rset2.next()){
+					Empleado e=new Empleado();
+					e.setEmp_no(rset2.getInt("EMP_NO"));
+					e.setApellido(rset2.getString("APELLIDO"));
+					e.setOficio(rset2.getString("OFICIO"));
+					e.setSalario(rset2.getDouble("SALARIO"));
+					e.setComision(rset2.getDouble("COMISION"));
+					System.out.println(this.formatoEmple(e));
+				}
 			}
 			System.out.println();
 			rset.close();
@@ -77,7 +89,10 @@ public class Empresa {
 		return this.addEspacios(d.getDept_no()+"", 6)+this.addEspacios(d.getDnombre(), 30)+this.addEspacios(d.getLoc(), 15);
 	}
 	
-	
+	private String formatoEmple(Empleado e){
+		return this.addEspacios(e.getEmp_no()+"", 6)+this.addEspacios(e.getApellido(), 30)+this.addEspacios(e.getOficio(), 15)
+				+this.addEspacios(e.getSalario()+"", 6)+this.addEspacios(e.getTotal()+"", 8);
+	}
 	
 	public void menu(){
 		BufferedReader teclado=new BufferedReader(new InputStreamReader(System.in));
