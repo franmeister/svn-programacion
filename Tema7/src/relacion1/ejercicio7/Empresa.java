@@ -4,7 +4,10 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
+import java.sql.Statement;
 
 public class Empresa {
 
@@ -40,6 +43,42 @@ public class Empresa {
 		}
 	}
 	
+	private String addEspacios(String dato,int caracteres){
+		String ret="";
+		for (int i=dato.length();i<caracteres;i++){
+			ret=ret+" ";
+		}
+		ret=(dato+ret).substring(0,caracteres);
+		return ret;
+	}
+	
+	private void imprimirDatos(Connection con){
+		try{
+			Statement stmt=this.con.createStatement();
+			String sql="select * from depart";
+			ResultSet rset=stmt.executeQuery(sql);
+			System.out.println(this.addEspacios("Nº Departamento",6)+this.addEspacios("Nombre", 30)+this.addEspacios("Localidad",15));
+			while (rset.next()){
+				Departamento d=new Departamento();
+				d.setDept_no(rset.getInt("DEPT_NO"));
+				d.setDnombre(rset.getString("DNOMBRE")+"-");
+				d.setLoc(rset.getString("LOC"));
+				System.out.println(this.formatoDepart(d));
+			}
+			System.out.println();
+			rset.close();
+			stmt.close();
+		}catch(SQLException e){
+			System.out.println("Error en la BD.");
+		}
+	}
+	
+	private String formatoDepart(Departamento d){
+		return this.addEspacios(d.getDept_no()+"", 6)+this.addEspacios(d.getDnombre(), 30)+this.addEspacios(d.getLoc(), 15);
+	}
+	
+	
+	
 	public void menu(){
 		BufferedReader teclado=new BufferedReader(new InputStreamReader(System.in));
 
@@ -73,6 +112,7 @@ public class Empresa {
 				gd.menu();
 				break;
 			case 3:
+				this.imprimirDatos(this.con);
 				break;
 			case 0:
 				System.out.println("Programa terminado.");
