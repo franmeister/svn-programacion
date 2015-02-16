@@ -1,6 +1,10 @@
 package relacion1.ejercicio7;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -52,6 +56,13 @@ public class Empresa {
 	}
 	
 	private void imprimirDatos(Connection con){
+		File f=new File("E:\\Users\\USUARIO\\Desktop\\svnJava\\Tema7\\src\\relacion1\\ejercicio7\\empresa.txt");
+		BufferedWriter fescritura = null;
+		try {
+			fescritura=new BufferedWriter(new FileWriter(f));
+		} catch (IOException e1) {
+			System.out.println("Error al manejar ficheros.");
+		}
 		double totalDep=0, total=0;
 		try{
 			Statement stmt=this.con.createStatement();
@@ -60,13 +71,30 @@ public class Empresa {
 			String sql="select * from depart";
 			ResultSet rset=stmt.executeQuery(sql);
 			while (rset.next()){
-				System.out.println(this.addEspacios("Nº Departamento",6)+this.addEspacios("Nombre", 30)+this.addEspacios("Localidad",15));
-				System.out.println("---------------------------------------------------------------------------");
+				try {
+					fescritura.write(this.addEspacios("Nº Departamento",6)+this.addEspacios("Nombre", 30)+this.addEspacios("Localidad",15));
+					fescritura.newLine();
+					fescritura.write("---------------------------------------------------------------------------");
+					fescritura.newLine();
+				} catch (IOException e1) {
+					System.out.println("Error al escribir en fichero");
+				}
 				Departamento d=new Departamento();
 				d.setDept_no(rset.getInt("DEPT_NO"));
 				d.setDnombre(rset.getString("DNOMBRE"));
 				d.setLoc(rset.getString("LOC"));
-				System.out.println(this.formatoDepart(d));
+				try{
+					fescritura.write(this.formatoDepart(d));
+					fescritura.newLine();
+					fescritura.newLine();
+					fescritura.write(this.addEspacios("Nº Empleado",6)+this.addEspacios("Nombre", 30)
+							+this.addEspacios("Oficio",15)+this.addEspacios("Salario", 11)+this.addEspacios("Total", 10));
+					fescritura.newLine();
+					fescritura.write("---------------------------------------------------------------------------");
+					fescritura.newLine();
+				} catch (IOException e1) {
+					System.out.println("Error al escribir en fichero");
+				}
 				String sql2="select * from emple where dept_no="+rset.getInt("DEPT_NO");
 				ResultSet rset2=stmt2.executeQuery(sql2);
 				while(rset2.next()){
@@ -76,15 +104,31 @@ public class Empresa {
 					e.setOficio(rset2.getString("OFICIO"));
 					e.setSalario(rset2.getDouble("SALARIO"));
 					e.setComision(rset2.getDouble("COMISION"));
-					System.out.println(this.formatoEmple(e));
+					try {
+						fescritura.write(this.formatoEmple(e));
+						fescritura.newLine();
+					} catch (IOException e1) {
+						System.out.println("Error al escribir en fichero");
+					}
 					totalDep+=rset2.getDouble("SALARIO");
 				}
 				total+=totalDep;
-				System.out.println(this.addEspacios("", 42)+"Total Departamento: "+totalDep);
-				System.out.println();
+				try {
+					fescritura.write(this.addEspacios("", 42)+"Total Departamento: "+totalDep);
+					fescritura.newLine();
+					fescritura.newLine();
+				} catch (IOException e1) {
+					System.out.println("Error al escribir en fichero");
+				}
 				totalDep=0;
 			}
-			System.out.println(this.addEspacios("", 45)+"Total Empresa: "+total);
+			try {
+				fescritura.write(this.addEspacios("", 45)+"Total Empresa: "+total);
+				fescritura.flush();
+				fescritura.close();
+			} catch (IOException e1) {
+				System.out.println("Error al escribir en fichero");
+			}
 			rset.close();
 			stmt.close();
 		}catch(SQLException e){
