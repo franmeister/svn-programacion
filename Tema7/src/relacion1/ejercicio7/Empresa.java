@@ -52,6 +52,7 @@ public class Empresa {
 	}
 	
 	private void imprimirDatos(Connection con){
+		double totalDep=0, total=0;
 		try{
 			Statement stmt=this.con.createStatement();
 			Statement stmt2=this.con.createStatement();
@@ -60,9 +61,10 @@ public class Empresa {
 			ResultSet rset=stmt.executeQuery(sql);
 			while (rset.next()){
 				System.out.println(this.addEspacios("Nº Departamento",6)+this.addEspacios("Nombre", 30)+this.addEspacios("Localidad",15));
+				System.out.println("---------------------------------------------------------------------------");
 				Departamento d=new Departamento();
 				d.setDept_no(rset.getInt("DEPT_NO"));
-				d.setDnombre(rset.getString("DNOMBRE")+"-");
+				d.setDnombre(rset.getString("DNOMBRE"));
 				d.setLoc(rset.getString("LOC"));
 				System.out.println(this.formatoDepart(d));
 				String sql2="select * from emple where dept_no="+rset.getInt("DEPT_NO");
@@ -75,9 +77,14 @@ public class Empresa {
 					e.setSalario(rset2.getDouble("SALARIO"));
 					e.setComision(rset2.getDouble("COMISION"));
 					System.out.println(this.formatoEmple(e));
+					totalDep+=rset2.getDouble("SALARIO");
 				}
+				total+=totalDep;
+				System.out.println(this.addEspacios("", 42)+"Total Departamento: "+totalDep);
+				System.out.println();
+				totalDep=0;
 			}
-			System.out.println();
+			System.out.println(this.addEspacios("", 45)+"Total Empresa: "+total);
 			rset.close();
 			stmt.close();
 		}catch(SQLException e){
@@ -91,7 +98,7 @@ public class Empresa {
 	
 	private String formatoEmple(Empleado e){
 		return this.addEspacios(e.getEmp_no()+"", 6)+this.addEspacios(e.getApellido(), 30)+this.addEspacios(e.getOficio(), 15)
-				+this.addEspacios(e.getSalario()+"", 6)+this.addEspacios(e.getTotal()+"", 8);
+				+this.addEspacios(e.getSalario()+"", 11)+this.addEspacios(e.getTotal()+"", 10);
 	}
 	
 	public void menu(){

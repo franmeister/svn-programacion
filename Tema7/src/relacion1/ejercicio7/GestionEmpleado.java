@@ -116,39 +116,40 @@ public class GestionEmpleado {
 	}
 	
 	private void listarPorDepart(){
-		Statement stmt, stmt2;
+		BufferedReader teclado=new BufferedReader(new InputStreamReader(System.in));
+
+		Statement stmt;
 		try {
 			stmt = con.createStatement();
-			stmt2 = con.createStatement();
-			
-			String sql="select * from depart";
-			ResultSet rset = stmt.executeQuery(sql);
-			
-			while (rset.next()){
-				int dept_no=rset.getInt("DEPT_NO");
-				System.out.print (dept_no+"-");
-				System.out.print (rset.getString("DNOMBRE")+"-");
-				System.out.println (rset.getString("LOC"));
-				
-				String sql2="select * from emple where dept_no="+dept_no;
-				ResultSet rset2 = stmt2.executeQuery(sql2);
-				
-				while (rset2.next()){
-					System.out.println (rset2.getInt("EMP_NO")+"-"+rset2.getString("APELLIDO")+"-"
-								+rset2.getString("OFICIO")+(rset2.getInt("DIR")+"-")
-								+rset2.getString("FECHA_ALT")+"-"+rset2.getDouble("SALARIO")+"-"
-								+rset2.getDouble("COMISION")+"-"+rset2.getDouble("TOTAL")+"-"
-								+rset2.getInt("DEPT_NO"));
+			int num=0;
+			boolean seguir;
+			do{
+				try{
+					System.out.println("Introduzca una número de departamento:");
+					num=Integer.parseInt(teclado.readLine());
+					seguir=true;
+				}catch (Exception e) {
+					System.out.println("Debe de introducir un numero entero");
+					seguir=false;
 				}
-				System.out.println();
-				rset2.close();
+			}while(!seguir);
+					
+			String sql="select * from emple where dept_no="+num;
+			ResultSet rset = stmt.executeQuery(sql);
+					
+			while (rset.next()){
+				System.out.println (rset.getInt("EMP_NO")+"-"+rset.getString("APELLIDO")+"-"
+							+rset.getString("OFICIO")+"-"+(rset.getInt("DIR")+"-")
+							+rset.getString("FECHA_ALT")+"-"+rset.getDouble("SALARIO")+"-"
+							+rset.getDouble("COMISION")+"-"+rset.getDouble("TOTAL")+"-"
+							+rset.getInt("DEPT_NO"));
 			}
 			rset.close();
 			stmt.close(); 
-			stmt2.close();
 			con.close();
 		} catch (SQLException e) {
-			System.out.println("Error de BD");
+			//System.out.println("Error de BD");
+			e.printStackTrace();;
 		}
 	}
 	
