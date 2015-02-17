@@ -55,7 +55,7 @@ public class Empresa {
 		return ret;
 	}
 	
-	private void imprimirDatos(Connection con){
+	private void imprimirDatos(){
 		File f=new File("E:\\Users\\USUARIO\\Desktop\\svnJava\\Tema7\\src\\relacion1\\ejercicio7\\empresa.txt");
 		BufferedWriter fescritura = null;
 		try {
@@ -178,7 +178,7 @@ public class Empresa {
 				gd.menu();
 				break;
 			case 3:
-				this.imprimirDatos(this.con);
+				this.imprimirDatos();
 				break;
 			case 0:
 				System.out.println("Programa terminado.");
