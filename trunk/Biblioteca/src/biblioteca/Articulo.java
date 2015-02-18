@@ -65,14 +65,12 @@ public class Articulo {
 		return false;
 	}
 	
-	public void pedirArticulo(boolean modificar){	//Si se llama desde modificar material no pedira codigo
+	public void pedirArticulo(){
 		BufferedReader teclado=new BufferedReader(new InputStreamReader(System.in));
 
 		try{
-			if(!modificar){
-				System.out.println("Introduce Código del Artículo:");
-				this.codArticulo = Integer.parseInt(teclado.readLine());
-			}
+			System.out.println("Introduce Código del Artículo:");
+			this.codArticulo = Integer.parseInt(teclado.readLine());
 			System.out.println("Introduce Autor:");
 			this.autor = teclado.readLine();
 			System.out.println("Introduce Título:");

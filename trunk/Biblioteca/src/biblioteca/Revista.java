@@ -67,14 +67,12 @@ public class Revista {
 	}
 	
 
-	public void pedirRevista(boolean modificar){	//Si se llama desde modificar material no pedira codigo
+	public void pedirRevista(){	
 		BufferedReader teclado=new BufferedReader(new InputStreamReader(System.in));
 
 		try{
-			if(!modificar){
-				System.out.println("Introduce Código de la Revista:");
-				this.codRevista = Integer.parseInt(teclado.readLine());
-			}
+			System.out.println("Introduce Código de la Revista:");
+			this.codRevista = Integer.parseInt(teclado.readLine());
 			System.out.println("Introduce Signatura:");
 			this.signatura = teclado.readLine();
 			System.out.println("Introduce Materia:");

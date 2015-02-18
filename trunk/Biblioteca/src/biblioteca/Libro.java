@@ -87,14 +87,12 @@ public class Libro {
 		return false;
 	}
 	
-	public void pedirLibro(boolean modificar){	//Si se llama desde modificar material no pedira isbn
+	public void pedirLibro(){
 		BufferedReader teclado=new BufferedReader(new InputStreamReader(System.in));
 
 		try{
-			if(!modificar){
-				System.out.println("Introduce ISBN:");
-				this.isbn = teclado.readLine();
-			}
+			System.out.println("Introduce ISBN:");
+			this.isbn = teclado.readLine();
 			System.out.println("Introduce Signatura:");
 			this.signatura = teclado.readLine();
 			System.out.println("Introduce Autor:");
