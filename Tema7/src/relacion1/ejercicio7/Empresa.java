@@ -56,7 +56,8 @@ public class Empresa {
 	}
 	
 	private void imprimirDatos(){
-		File f=new File("E:\\Users\\USUARIO\\Desktop\\svnJava\\Tema7\\src\\relacion1\\ejercicio7\\empresa.txt");
+		//File f=new File("E:\\Users\\USUARIO\\Desktop\\svnJava\\Tema7\\src\\relacion1\\ejercicio7\\empresa.txt");
+		File f=new File((new File("")).getAbsolutePath(),"empresa.txt");
 		BufferedWriter fescritura = null;
 		try {
 			fescritura=new BufferedWriter(new FileWriter(f));
@@ -95,7 +96,7 @@ public class Empresa {
 				} catch (IOException e1) {
 					System.out.println("Error al escribir en fichero");
 				}
-				String sql2="select * from emple where dept_no="+rset.getInt("DEPT_NO");
+				String sql2="select * from emple where dept_no="+d.getDept_no();
 				ResultSet rset2=stmt2.executeQuery(sql2);
 				while(rset2.next()){
 					Empleado e=new Empleado();
@@ -110,8 +111,9 @@ public class Empresa {
 					} catch (IOException e1) {
 						System.out.println("Error al escribir en fichero");
 					}
-					totalDep+=rset2.getDouble("SALARIO");
+					totalDep+=e.getTotal();
 				}
+				rset2.close();
 				total+=totalDep;
 				try {
 					fescritura.write(this.addEspacios("", 42)+"Total Departamento: "+totalDep);

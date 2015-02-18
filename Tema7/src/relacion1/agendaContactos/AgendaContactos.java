@@ -27,8 +27,8 @@ public class AgendaContactos {
 			return null;
 		}
 		try {
-			//Connection con = DriverManager.getConnection("jdbc:oracle:thin:@127.0.0.1:1521:xe", "java", "java");	
-			Connection con = DriverManager.getConnection("jdbc:mysql://127.0.0.1/java","root","");			
+			Connection con = DriverManager.getConnection("jdbc:oracle:thin:@127.0.0.1:1521:xe", "java", "java");	
+			//Connection con = DriverManager.getConnection("jdbc:mysql://127.0.0.1/java","root","");			
 			return con;
 		} catch (SQLException e) {
 			System.out.println("Error al conectar con la BD.");
@@ -104,18 +104,88 @@ public class AgendaContactos {
 		}
 	}
 	
+	private void listarContactos(){
+		String sql="select * from contactos";
+		Contacto c=new Contacto();
+
+		try {
+			Statement stmt=con.createStatement();
+			ResultSet rset=stmt.executeQuery(sql);
+			
+			while(rset.next()){
+				c.setCp(rset.getInt("CP")+"");
+				c.setDireccion(rset.getString("DIRECCION"));
+				c.setMunicipio(rset.getString("MUNICIPIO"));
+				c.setNombre(rset.getString("NOMBRE"));
+				c.setProvincia(rset.getString("PROVINCIA"));
+				c.setTelefonoFijo(rset.getInt("TEL_FIJO")+"");
+				c.setTelefonoMovil(rset.getInt("TEL_MOVIL")+"");
+
+				System.out.println(c.toString());
+			}
+
+		} catch (SQLException e) {
+			System.out.println("Error en BD.");
+
+		}
+	}
+	
+	private void modificarContacto(String nom){
+		Contacto c = new Contacto();
+		c.pedirContacto();
+		
+		String sql="update contactos set nombre='"+c.getNombre()+"',direccion='"+c.getDireccion()+"',cp="+c.getCp()
+				+",municipio='"+c.getMunicipio()+"',provincia='"+c.getProvincia()+"',tel_fijo="+c.getTelefonoFijo()
+				+",tel_movil="+c.getTelefonoMovil()+" where nombre='"+nom+"'";
+		System.out.println(sql);
+		Statement stmt;
+		try {
+			stmt = con.createStatement();
+			int res=stmt.executeUpdate(sql);
+			
+			if(res>=1){	//En el caso que haya más de un contacto con el mismo nombre
+				System.out.println("El contacto se ha modificiado correctamente.");
+				return;
+			}
+			System.out.println("El contacto no se encuentra en la BDD.");
+		} catch (SQLException e) {
+			System.out.println("Error en BD.");
+		}
+		
+	}
+	
+	private void borrarContacto(String nom){
+		String sql="delete from contactos where nombre='"+nom+"'";
+		
+		Statement stmt;
+		try {
+			stmt = con.createStatement();
+			int res=stmt.executeUpdate(sql);
+			
+			if(res>=1){	//En el caso que haya más de un contacto con el mismo nombre
+				System.out.println("El contacto se ha borrado correctamente.");
+				return;
+			}
+			System.out.println("El contacto no se encuentra en la BDD.");
+		} catch (SQLException e) {
+			System.out.println("Error en BD.");
+		}
+		
+	}
+	
 	public void menu(){
 		BufferedReader teclado = new BufferedReader(new InputStreamReader(System.in));
-		int op=0;
+		int op=-1;
 		boolean seguir=false;
 		
 		do{
+			System.out.println();
 			System.out.println("1. Añadir Contacto");
 			System.out.println("2. Ver Contacto");
 			System.out.println("3. Modificar Contacto");
 			System.out.println("4. Borrar Contacto");
 			System.out.println("5. Listar Contactos");
-			System.out.println("6. Salir");
+			System.out.println("0. Salir");
 			do{
 				try{
 					System.out.println("Introduzca una opción:");
@@ -135,23 +205,23 @@ public class AgendaContactos {
 				this.verContacto(this.pedirNombre());
 				break;
 			case 3:
-				//this.modificarContacto(this.pedirNombre());
+				this.modificarContacto(this.pedirNombre());
 				break;
 			case 4:
-				//this.borrarContacto(this.pedirNombre());
+				this.borrarContacto(this.pedirNombre());
 				break;
 			case 5:
-				//this.listarContactos();
+				this.listarContactos();
 				break;
-			case 6:
+			case 0:
 				System.out.println("Programa terminado.");
 				this.desconexion();
 				break;
 			default:
-				System.out.println("Debe introducir un numero entre 1 y 6");
+				System.out.println("Debe introducir un numero entre 0 y 5");
 				break;
 			}
-		}while(op!=6);
+		}while(op!=0);
 	}
 
 }
