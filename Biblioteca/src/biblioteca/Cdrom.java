@@ -87,14 +87,12 @@ public class Cdrom {
 		return false;
 	}
 
-	public void pedirCdrom(boolean modificar){	//Si se llama desde modificar material no pedira codigo
+	public void pedirCdrom(){
 		BufferedReader teclado=new BufferedReader(new InputStreamReader(System.in));
 
 		try{
-			if(!modificar){
-				System.out.println("Introduce Código del CD-ROM:");
-				this.codCdrom = Integer.parseInt(teclado.readLine());
-			}
+			System.out.println("Introduce Código del CD-ROM:");
+			this.codCdrom = Integer.parseInt(teclado.readLine());
 			System.out.println("Introduce Signatura:");
 			this.signatura = teclado.readLine();
 			System.out.println("Introduce Autor:");

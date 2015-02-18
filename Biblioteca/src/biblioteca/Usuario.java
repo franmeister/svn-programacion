@@ -66,14 +66,12 @@ public class Usuario {
 		return false;
 	}
 	
-	public void pedirUsuario(boolean modificar){	//Si se llama desde modificar material no pedira codigo
+	public void pedirUsuario(){
 		BufferedReader teclado=new BufferedReader(new InputStreamReader(System.in));
 
 		try{
-			if(!modificar){
-				System.out.println("Introduce Código del Usuario:");
-				this.codUsuario = Integer.parseInt(teclado.readLine());
-			}
+			System.out.println("Introduce Código del Usuario:");
+			this.codUsuario = Integer.parseInt(teclado.readLine());
 			System.out.println("Introduce Nombre:");
 			this.nombre = teclado.readLine();
 			System.out.println("Introduce Primer Apellido:");
