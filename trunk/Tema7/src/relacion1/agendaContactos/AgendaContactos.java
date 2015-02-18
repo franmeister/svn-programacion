@@ -19,8 +19,8 @@ public class AgendaContactos {
 	
 	private Connection conexion(){
 		try {
-			Class.forName("com.mysql.jdbc.Driver");
-			//Class.forName("oracle.jdbc.driver.OracleDriver");
+			//Class.forName("com.mysql.jdbc.Driver");
+			Class.forName("oracle.jdbc.driver.OracleDriver");
 		} catch (ClassNotFoundException e) {
 			System.out.println("Error al cargar el Driver.");
 			System.exit(0);
