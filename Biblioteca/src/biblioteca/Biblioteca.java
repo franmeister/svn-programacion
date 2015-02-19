@@ -30,7 +30,7 @@ public class Biblioteca {
 			return null;
 		}
 		try {
-			Connection con = DriverManager.getConnection("jdbc:oracle:thin:@127.0.0.1:1521:xe", "java", "java");	
+			Connection con = DriverManager.getConnection("jdbc:oracle:thin:@127.0.0.1:1521:xe", "biblioteca", "biblioteca");	
 			//Connection con = DriverManager.getConnection("jdbc:mysql://127.0.0.1/java","root","");			
 			return con;
 		} catch (SQLException e) {
@@ -473,7 +473,7 @@ public class Biblioteca {
 		}while(opcion!=0);
 		
 	}
-	
+	/*
 	private void listarMaterial(String material){
 		String linea;
 		
@@ -611,7 +611,7 @@ public class Biblioteca {
 			}
 		}while(opcion!=0);
 	}
-	
+	*/
 	public void menu(){
 		int opcion=-1;
 		do{
@@ -640,25 +640,29 @@ public class Biblioteca {
 				this.desconexion();
 				break;
 			case 1:
-				this.menuMaterial("Libro");
+				GestionLibro gl=new GestionLibro(this.con);
+				gl.menu();
 				break;
 			case 2:
-				this.menuMaterial("Revista");
+				GestionRevista gar=new GestionRevista(this.con);
+				gar.menu();
 				break;
 			case 3:
-				this.menuMaterial("CD-ROM");
+				GestionCdrom gc=new GestionCdrom(this.con);
+				gc.menu();
 				break;
 			case 4:
-				this.menuMaterial("Articulo");
+				GestionArticulo ga=new GestionArticulo(this.con);
+				ga.menu();
 				break;
 			case 5:
-				this.menuMaterial("Usuario");
+				//this.menuMaterial("Usuario");
 				break;
 			case 6:
-				this.realizarPrestamo();
+				//this.realizarPrestamo();
 				break;
 			case 7:
-				this.devolverPrestamo();
+				//this.devolverPrestamo();
 				break;
 			default:
 				System.out.println("Debe selecionar una opción correcta. Vuelva a intentarlo.");
