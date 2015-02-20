@@ -656,7 +656,8 @@ public class Biblioteca {
 				ga.menu();
 				break;
 			case 5:
-				//this.menuMaterial("Usuario");
+				GestionUsuario gu=new GestionUsuario(this.con);
+				gu.menu();
 				break;
 			case 6:
 				//this.realizarPrestamo();

@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.sql.Connection;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
@@ -29,12 +30,94 @@ public class GestionCdrom {
 			if (res == 1) {
 				System.out.println("El CD-ROM se ha insertado correctamente.");
 			}
+			stmt.close();
 
 		} catch (SQLException e) {
 			System.out.println("Error en BD.");
 		}
 	}
 
+	private void listarCdrom(){
+		Cdrom c = new Cdrom();
+		String sql="select * from cdrom";
+		
+		try {
+			Statement stmt = con.createStatement();
+			ResultSet rset=stmt.executeQuery(sql);
+			
+			while(rset.next()){
+				c.setCodCdrom(rset.getInt("CODCDROM"));
+				c.setSignatura(rset.getString("SIGNATURA"));
+				c.setTitulo(rset.getString("TITULO"));
+				c.setAutor(rset.getString("AUTOR"));
+				c.setMateria(rset.getString("MATERIA"));
+				c.setEditorial(rset.getString("EDITORIAL"));
+				
+				System.out.println(c.toString()+"\n");
+			}
+			rset.close();
+			stmt.close();
+		} catch (SQLException e) {
+			System.out.println("Error en BD.");
+		}
+	}
+	
+	private void buscarCdrom(int cod){
+		Cdrom c = new Cdrom();
+		String sql="select * from cdrom where codcdrom="+cod;
+		
+		try {
+			Statement stmt = con.createStatement();
+			ResultSet rset=stmt.executeQuery(sql);
+			
+			while(rset.next()){
+				c.setCodCdrom(rset.getInt("CODCDROM"));
+				c.setSignatura(rset.getString("SIGNATURA"));
+				c.setTitulo(rset.getString("TITULO"));
+				c.setAutor(rset.getString("AUTOR"));
+				c.setMateria(rset.getString("MATERIA"));
+				c.setEditorial(rset.getString("EDITORIAL"));
+				
+				System.out.println(c.toString()+"\n");
+			}
+			rset.close();
+			stmt.close();
+		} catch (SQLException e) {
+			System.out.println("Error en BD.");
+		}
+	}
+	
+	private int pedirCodigo(){
+		BufferedReader teclado=new BufferedReader(new InputStreamReader(System.in));
+
+		int cod=-1;
+		try {
+			System.out.println("Introduzca el código: ");
+			cod = Integer.parseInt(teclado.readLine());
+		} catch (IOException e) {
+			System.out.println("Error al introducir datos.");
+		}
+		return cod;
+	}
+	
+	private void borrarCdrom(int cod){
+		String sql="delete from cdrom where codcdrom="+cod;
+		
+		Statement stmt;
+		try {
+			stmt = con.createStatement();
+			int res=stmt.executeUpdate(sql);
+			
+			if(res>=1){
+				System.out.println("El CD-ROM se ha borrado correctamente.");
+				return;
+			}
+			System.out.println("El CD-ROM no se encuentra en la BDD.");
+		} catch (SQLException e) {
+			System.out.println("Error en BD.");
+		}
+	}
+	
 	public void menu() {
 		BufferedReader teclado = new BufferedReader(new InputStreamReader(
 				System.in));
@@ -67,13 +150,13 @@ public class GestionCdrom {
 				// this.modificarMaterial(material);
 				break;
 			case 3:
-				// this.borrarMaterial(material);
+				this.borrarCdrom(this.pedirCodigo());
 				break;
 			case 4:
-				// this.listarMaterial(material);
+				this.listarCdrom();
 				break;
 			case 5:
-				// this.buscarMaterial(material);
+				this.buscarCdrom(this.pedirCodigo());
 				break;
 			default:
 				System.out.println("Debe selecionar una opción correcta. Vuelva a intentarlo.");
