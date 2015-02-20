@@ -660,9 +660,10 @@ public class Biblioteca {
 				gu.menu();
 				break;
 			case 6:
-				//this.realizarPrestamo();
+				GestionPrestamo gp=new GestionPrestamo(this.con);
 				break;
 			case 7:
+				GestionPrestamo gp=new GestionPrestamo(this.con);
 				//this.devolverPrestamo();
 				break;
 			default:

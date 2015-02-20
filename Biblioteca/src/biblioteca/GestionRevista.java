@@ -102,12 +102,36 @@ public class GestionRevista {
 		try {
 			stmt = con.createStatement();
 			int res=stmt.executeUpdate(sql);
-			
+			stmt.close();
+
 			if(res>=1){
 				System.out.println("La revista se ha borrado correctamente.");
 				return;
 			}
 			System.out.println("La revista no se encuentra en la BDD.");
+		} catch (SQLException e) {
+			System.out.println("Error en BD.");
+		}
+	}
+	
+	private void modificarRevista(int cod){
+		Revista r = new Revista();
+		r.pedirRevista();
+
+		String sql = "update revista set codrevista="+r.getCodRevista()+",signatura='"+r.getSignatura()
+				+ "',nombre='"+r.getNombre() + "',materia='"+r.getMateria()+ "where codrevista="+cod;
+
+		try {
+			Statement stmt = con.createStatement();
+			int res = stmt.executeUpdate(sql);
+			stmt.close();
+
+			if (res == 1) {
+				System.out.println("La revista se ha modificado correctamente.");
+				return;
+			}
+			System.out.println("La revista no se encuentra en la BDD.");
+
 		} catch (SQLException e) {
 			System.out.println("Error en BD.");
 		}
@@ -142,7 +166,7 @@ public class GestionRevista {
 				this.nuevoRevista();
 				break;
 			case 2:
-				// this.modificarMaterial(material);
+				this.modificarRevista(this.pedirCodigo());
 				break;
 			case 3:
 				this.borrarRevista(this.pedirCodigo());
