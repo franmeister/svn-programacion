@@ -663,7 +663,7 @@ public class Biblioteca {
 				GestionPrestamo gp=new GestionPrestamo(this.con);
 				break;
 			case 7:
-				GestionPrestamo gp=new GestionPrestamo(this.con);
+				GestionPrestamo gp2=new GestionPrestamo(this.con);
 				//this.devolverPrestamo();
 				break;
 			default:
