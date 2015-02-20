@@ -102,7 +102,8 @@ public class GestionArticulo {
 		try {
 			stmt = con.createStatement();
 			int res=stmt.executeUpdate(sql);
-			
+			stmt.close();
+
 			if(res>=1){
 				System.out.println("El articulo se ha borrado correctamente.");
 				return;
@@ -111,6 +112,29 @@ public class GestionArticulo {
 		} catch (SQLException e) {
 			System.out.println("Error en BD.");
 		}
+	}
+	
+	private void modificarArticulo(int cod){
+		Articulo a = new Articulo();
+		a.pedirArticulo();
+		
+		String sql="update articulo set codarticulo="+a.getCodArticulo()+",titulo='"+a.getTitulo()+"',autor='"
+				+a.getAutor()+"',numpaginas="+a.getNumPaginas()+" where codarticulo="+cod;
+
+		Statement stmt;
+		try {
+			stmt = con.createStatement();
+			int res=stmt.executeUpdate(sql);
+			stmt.close();
+			if(res>=1){
+				System.out.println("El artículo se ha modificiado correctamente.");
+				return;
+			}
+			System.out.println("El artículo no se encuentra en la BDD.");
+		} catch (SQLException e) {
+			System.out.println("Error en BD.");
+		}
+		
 	}
 	
 	public void menu(){
@@ -141,7 +165,7 @@ public class GestionArticulo {
 				this.nuevoArticulo();
 				break;
 			case 2:
-				//this.modificarMaterial(material);
+				this.modificarArticulo(this.pedirCodigo());
 				break;
 			case 3:
 				this.borrarArticulo(this.pedirCodigo());

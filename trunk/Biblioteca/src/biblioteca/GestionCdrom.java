@@ -26,11 +26,13 @@ public class GestionCdrom {
 		try {
 			Statement stmt = con.createStatement();
 			int res = stmt.executeUpdate(sql);
+			stmt.close();
 
 			if (res == 1) {
-				System.out.println("El CD-ROM se ha insertado correctamente.");
+				System.out.println("El CD-ROM se ha modificado correctamente.");
+				return;
 			}
-			stmt.close();
+			System.out.println("El artículo no se encuentra en la BDD.");
 
 		} catch (SQLException e) {
 			System.out.println("Error en BD.");
@@ -57,6 +59,30 @@ public class GestionCdrom {
 			}
 			rset.close();
 			stmt.close();
+		} catch (SQLException e) {
+			System.out.println("Error en BD.");
+		}
+	}
+	
+	private void modificarCdrom(int cod){
+		Cdrom c = new Cdrom();
+		c.pedirCdrom();
+		
+		String sql="update cdrom set codcdrom="+c.getCodCdrom()+",signatura='"+c.getSignatura()
+				+ "',titulo='"+c.getTitulo() + "',autor='"+c.getAutor() + "',materia='"+c.getMateria()
+				+ "',editorial='" + c.getEditorial()+" where codcdrom="+cod;
+		
+		try {
+			Statement stmt = con.createStatement();
+			int res = stmt.executeUpdate(sql);
+			stmt.close();
+
+			if (res == 1) {
+				System.out.println("El CD-ROM se ha insertado correctamente.");
+				return;
+			}
+			System.out.println("El CD-ROM no se encuentra en la BDD.");
+
 		} catch (SQLException e) {
 			System.out.println("Error en BD.");
 		}
@@ -107,7 +133,8 @@ public class GestionCdrom {
 		try {
 			stmt = con.createStatement();
 			int res=stmt.executeUpdate(sql);
-			
+			stmt.close();
+
 			if(res>=1){
 				System.out.println("El CD-ROM se ha borrado correctamente.");
 				return;
@@ -147,7 +174,7 @@ public class GestionCdrom {
 				this.nuevoCdrom();
 				break;
 			case 2:
-				// this.modificarMaterial(material);
+				this.modificarCdrom(this.pedirCodigo());
 				break;
 			case 3:
 				this.borrarCdrom(this.pedirCodigo());

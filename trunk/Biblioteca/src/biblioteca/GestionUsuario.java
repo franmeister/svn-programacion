@@ -102,9 +102,32 @@ public class GestionUsuario {
 		try {
 			stmt = con.createStatement();
 			int res=stmt.executeUpdate(sql);
-			
+			stmt.close();
+
 			if(res>=1){
 				System.out.println("El usuario se ha borrado correctamente.");
+				return;
+			}
+			System.out.println("El usuario no se encuentra en la BDD.");
+		} catch (SQLException e) {
+			System.out.println("Error en BD.");
+		}
+	}
+	
+	private void modificarUsuario(int cod) {
+		Usuario u = new Usuario();
+		u.pedirUsuario();
+
+		String sql = "update usuario set codusuario="+u.getCodUsuario()+",nombre='"+u.getNombre()
+				+ "',apellido1='"+u.getApellido1() + "',apellido2='"+u.getApellido2()+ "where codusuario="+cod;
+
+		try {
+			Statement stmt = con.createStatement();
+			int res = stmt.executeUpdate(sql);
+			stmt.close();
+
+			if (res == 1) {
+				System.out.println("El usuario se ha modificado correctamente.");
 				return;
 			}
 			System.out.println("El usuario no se encuentra en la BDD.");
@@ -142,7 +165,7 @@ public class GestionUsuario {
 				this.nuevoUsuario();
 				break;
 			case 2:
-				// this.modificarMaterial(material);
+				this.modificarUsuario(this.pedirCodigo());
 				break;
 			case 3:
 				this.borrarUsuario(this.pedirCodigo());

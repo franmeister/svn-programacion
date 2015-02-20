@@ -107,7 +107,8 @@ public class GestionLibro {
 		try {
 			stmt = con.createStatement();
 			int res=stmt.executeUpdate(sql);
-			
+			stmt.close();
+
 			if(res>=1){
 				System.out.println("El libro se ha borrado correctamente.");
 				return;
@@ -117,6 +118,32 @@ public class GestionLibro {
 			System.out.println("Error en BD.");
 		}
 	}
+	
+	private void modificarLibro(String cod){
+		Libro l = new Libro();
+		l.pedirLibro();
+		
+		String sql="update libro set isbn="+l.getIsbn()+",signatura='"+l.getSignatura()
+				+ "',titulo='"+l.getTitulo() + "',autor='"+l.getAutor() + "',materia='"+l.getMateria()
+				+ "',editorial='" + l.getEditorial()+" where isbn='"+cod+"'";
+
+		try {
+			Statement stmt = con.createStatement();
+			int res = stmt.executeUpdate(sql);
+			stmt.close();
+
+			if (res == 1) {
+				System.out.println("El libro se ha modificado correctamente.");
+				return;
+			}
+			System.out.println("El libro no se encuentra en la BDD.");
+
+		} catch (SQLException e) {
+			System.out.println("Error en BD.");
+		}
+	}
+		
+		
 	
 	public void menu() {
 		BufferedReader teclado = new BufferedReader(new InputStreamReader(
@@ -147,7 +174,7 @@ public class GestionLibro {
 				this.nuevoLibro();
 				break;
 			case 2:
-				// this.modificarMaterial(material);
+				this.modificarLibro(this.pedirIsbn());
 				break;
 			case 3:
 				this.borrarLibro(this.pedirIsbn());
