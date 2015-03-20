@@ -1,0 +1,46 @@
+Nº DepNombre                        Localidad      
+---------------------------------------------------------------------------
+10    qqq                           www            
+
+Nº EmpNombre                        Oficio         Salario    Total     
+---------------------------------------------------------------------------
+7782  CEREZO                        DIRECTOR       318500.0   318500.0  
+7839  REY                           PRESIDENTE     650000.0   650000.0  
+7934  MUÑOZ                         EMPLEADO       169000.0   169000.0  
+                                          Total Departamento: 1137500.0
+
+Nº DepNombre                        Localidad      
+---------------------------------------------------------------------------
+20    INVESTIGACIÓN                 MADRID         
+
+Nº EmpNombre                        Oficio         Salario    Total     
+---------------------------------------------------------------------------
+7369  SÁNCHEZ                       EMPLEADO       104000.0   104000.0  
+7566  JIMÉNEZ                       DIRECTOR       386750.0   386750.0  
+7876  ALONSO                        EMPLEADO       143000.0   143000.0  
+7902  FERNÁNDEZ                     ANALISTA       390000.0   390000.0  
+                                          Total Departamento: 1023750.0
+
+Nº DepNombre                        Localidad      
+---------------------------------------------------------------------------
+30    VENTAS                        BARCELONA      
+
+Nº EmpNombre                        Oficio         Salario    Total     
+---------------------------------------------------------------------------
+7499  ARROYO                        VENDEDOR       208000.0   247000.0  
+7521  SALA                          VENDEDOR       162500.0   227500.0  
+7654  MARTÍN                        VENDEDOR       162500.0   344500.0  
+7698  NEGRO                         DIRECTOR       370500.0   370500.0  
+7844  TOVAR                         VENDEDOR       195000.0   195000.0  
+7900  JIMENO                        EMPLEADO       123500.0   123500.0  
+                                          Total Departamento: 1508000.0
+
+Nº DepNombre                        Localidad      
+---------------------------------------------------------------------------
+40    PRODUCCIÓN                    BILBAO         
+
+Nº EmpNombre                        Oficio         Salario    Total     
+---------------------------------------------------------------------------
+                                          Total Departamento: 0.0
+
+                                             Total Empresa: 3669250.0
