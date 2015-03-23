@@ -20,7 +20,7 @@ public class Ejercicio4 extends JFrame implements ActionListener{
 		this.setTitle("Ejercicio 4");
 		
 		ppal = new JPanel();
-		ppal.setLayout(new GridLayout(1,5));
+		ppal.setLayout(new GridLayout(4,2));
 		l2 = new JLabel("Nombre: ");
 		l3 = new JLabel("Primer Apellido: ");
 		l4 = new JLabel("Segundo Apellido: ");
