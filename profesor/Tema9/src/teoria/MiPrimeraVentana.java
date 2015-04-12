@@ -25,10 +25,10 @@ public class MiPrimeraVentana extends JFrame implements ActionListener{
 		
 		l1.setForeground(c);
 		
-		t1=new JTextField("          ");
+		t1=new JTextField("Hola",50);
 		t1.addActionListener(this);
 		
-		t2=new JTextField("          ");
+		t2=new JTextField("");
 		Font f=new Font("Verdana", Font.BOLD, 20);
 		
 		//Boton b1

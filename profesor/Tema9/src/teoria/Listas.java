@@ -29,6 +29,7 @@ public class Listas extends JFrame implements ItemListener {
 		this.setLocation(400, 200);
 		this.setSize(100, 100);
 		this.setVisible(true);
+		this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		
 		
 	}
